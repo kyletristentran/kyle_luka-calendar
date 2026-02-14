@@ -37,10 +37,10 @@ const EVENTS = [
   { date: "2026-02-05", title: "Illumin Oral Pres", venue: "USC", status: "confirmed", time: "11:59pm", person: "kyle" },
   { date: "2026-02-06", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am", person: "kyle" },
   { date: "2026-02-06", title: "Tutoring - Erwin", venue: "USC", status: "confirmed", time: "1:00pm", person: "kyle" },
-  { date: "2026-02-08", title: "Tiki Disco Winter", venue: "Knockdown Center, BK", status: "confirmed", time: "10:00pm", person: "kyle" },
+  { date: "2026-02-08", title: "Tiki Disco Winter", venue: "Knockdown Center, BK", status: "confirmed", time: "10:00pm", person: "luka" },
   { date: "2026-02-09", title: "KT / Meina", venue: "USC", status: "confirmed", time: "2:00pm", person: "kyle" },
   { date: "2026-02-10", title: "KT / SkinFX", venue: "USC", status: "confirmed", time: "10:30am", person: "kyle" },
-  { date: "2026-02-12", title: "RawCuts", venue: "Secret Location, BK", status: "confirmed", time: "10:00pm", person: "kyle" },
+  { date: "2026-02-12", title: "RawCuts", venue: "Secret Location, BK", status: "confirmed", time: "10:00pm", person: "luka" },
   { date: "2026-02-12", title: "WRIT 340: Submit Illumin Rough Draft", venue: "USC", status: "confirmed", time: "11:45pm", person: "kyle" },
   { date: "2026-02-13", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am", person: "kyle" },
   { date: "2026-02-13", title: "Spring 26 Commencement", venue: "USC", status: "confirmed", time: "10:00pm", person: "luka" },
@@ -61,12 +61,12 @@ const EVENTS = [
   { date: "2026-02-25", title: "Dining Society Dinner", venue: "USC", status: "confirmed", time: "6:30pm", person: "luka" },
   { date: "2026-02-26", title: "Lever Friends Hangout", venue: "USC", status: "confirmed", time: "6:00pm", person: "luka" },
   { date: "2026-02-27", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am", person: "kyle" },
-  { date: "2026-03-01", title: "Tiki Disco Winter", venue: "Knockdown Center, BK", status: "confirmed", time: "10:00pm", person: "kyle" },
+  { date: "2026-03-01", title: "Tiki Disco Winter", venue: "Knockdown Center, BK", status: "confirmed", time: "10:00pm", person: "luka" },
   { date: "2026-03-20", title: "Prospa b2b Josh Baker", venue: "Navy Yard, BK", status: "tentative", time: "10:00pm", person: "luka" },
   { date: "2026-03-21", title: "Carl Cox", venue: "Navy Yard, BK", status: "tentative", time: "10:00pm", person: "luka" },
   { date: "2026-04-03", title: "SiDEPiECE", venue: "Navy Yard, BK", status: "tentative", time: "10:00pm", person: "luka" },
   { date: "2026-04-20", title: "Hot Since 82", venue: "House of Yes, BK", status: "confirmed", time: "10:00pm", person: "luka" },
-  { date: "2026-04-25", title: "CID", venue: "99 Scott, BK", status: "confirmed", time: "10:00pm", person: "kyle" },
+  { date: "2026-04-25", title: "CID", venue: "99 Scott, BK", status: "confirmed", time: "10:00pm", person: "luka" },
   { date: "2026-05-23", title: "Solomun", venue: "Fulton Fish Market, QE", status: "confirmed", time: "10:00pm", person: "luka" },
   { date: "2026-06-20", title: "Beltran", venue: "Navy Yard, BK", status: "tentative", time: "10:00pm", person: "luka" },
   { date: "2026-07-25", title: "Klangkunsler", venue: "Monegros Desert Festival, Frogo, SP", status: "confirmed", time: "All day", person: "luka" },
@@ -88,11 +88,16 @@ function getDaysInMonth(y, m) { return new Date(y, m + 1, 0).getDate(); }
 function getFirstDay(y, m) { return new Date(y, m, 1).getDay(); }
 function fmtKey(y, m, d) { return `${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`; }
 
-const eventMap = {};
-EVENTS.forEach(e => { if (!eventMap[e.date]) eventMap[e.date] = []; eventMap[e.date].push(e); });
+// Status colors
+const STATUS_CONFIG = {
+  confirmed: { label: "Busy", color: "#dc3545", bg: "#fff0f1", icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" },
+  tentative: { label: "Tentative", color: "#f59e0b", bg: "#fffbeb", icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" },
+  free: { label: "Free", color: "#22c55e", bg: "#f0fdf4", icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" },
+};
 
 export default function App() {
   const [year, setYear] = useState(2026);
+  const [events, setEvents] = useState(EVENTS.map((e, i) => ({ ...e, id: i })));
   const [month, setMonth] = useState(1);
   const [selected, setSelected] = useState(null);
   const [hovered, setHovered] = useState(null);
@@ -100,7 +105,19 @@ export default function App() {
   const [navOpen, setNavOpen] = useState(false);
   const [mobileView, setMobileView] = useState("month");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [highlightedWeekend, setHighlightedWeekend] = useState(null);
   const navRef = useRef(null);
+
+  // Dynamic event map from stateful events
+  const eventMap = useMemo(() => {
+    const m = {};
+    events.forEach(e => { if (!m[e.date]) m[e.date] = []; m[e.date].push(e); });
+    return m;
+  }, [events]);
+
+  const changeStatus = (eventId, newStatus) => {
+    setEvents(prev => prev.map(e => e.id === eventId ? { ...e, status: newStatus } : e));
+  };
 
   useEffect(() => {
     const h = () => setIsMobile(window.innerWidth < 768);
@@ -120,8 +137,8 @@ export default function App() {
   const daysInMonth = getDaysInMonth(year, month);
   const firstDay = getFirstDay(year, month);
   const prevMonthDays = getDaysInMonth(year, month === 0 ? 11 : month - 1);
-  const prev = () => { if (month === 0) { setMonth(11); setYear(y=>y-1); } else setMonth(m=>m-1); setSelected(null); };
-  const next = () => { if (month === 11) { setMonth(0); setYear(y=>y+1); } else setMonth(m=>m+1); setSelected(null); };
+  const prev = () => { if (month === 0) { setMonth(11); setYear(y=>y-1); } else setMonth(m=>m-1); setSelected(null); setHighlightedWeekend(null); };
+  const next = () => { if (month === 11) { setMonth(0); setYear(y=>y+1); } else setMonth(m=>m+1); setSelected(null); setHighlightedWeekend(null); };
   const today = new Date();
   const isToday = (d) => today.getFullYear() === year && today.getMonth() === month && today.getDate() === d;
   const todayCol = today.getFullYear() === year && today.getMonth() === month ? today.getDay() : -1;
@@ -152,10 +169,11 @@ export default function App() {
 
   const togglePerson = (p) => setPersonFilter(prev => ({ ...prev, [p]: !prev[p] }));
 
-  const kyleCount = EVENTS.filter(e => e.person === "kyle").length;
-  const lukaCount = EVENTS.filter(e => e.person === "luka").length;
-  const confirmed = EVENTS.filter(e => e.status === "confirmed").length;
-  const tentative = EVENTS.filter(e => e.status === "tentative").length;
+  const kyleCount = events.filter(e => e.person === "kyle").length;
+  const lukaCount = events.filter(e => e.person === "luka").length;
+  const confirmed = events.filter(e => e.status === "confirmed").length;
+  const tentative = events.filter(e => e.status === "tentative").length;
+  const freeCount = events.filter(e => e.status === "free").length;
 
   // Compute free weekends across semester (Feb–Jul 2026)
   const freeWeekends = useMemo(() => {
@@ -175,6 +193,7 @@ export default function App() {
             const satDate = new Date(2026, m, d);
             const sunDate = sunD <= dim ? new Date(2026, m, sunD) : null;
             results.push({
+              id: `${m}-${d}`,
               sat: satDate,
               sun: sunDate,
               label: `${satDate.toLocaleDateString("en-US",{month:"short",day:"numeric"})}${sunDate ? "–"+sunDate.getDate() : ""}`,
@@ -249,6 +268,9 @@ export default function App() {
           background: #fff; cursor: pointer; white-space: nowrap; transition: all 0.15s;
           display: inline-flex; align-items: center; gap: 6px;
         }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
       `}</style>
 
       <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", fontFamily: "'Google Sans','Segoe UI',Roboto,sans-serif", background: "#fff", color: C.text, maxWidth: isMobile ? "100%" : "none", margin: "0 auto" }}>
@@ -304,10 +326,13 @@ export default function App() {
             <div style={{ padding: "8px 24px 4px", fontSize: 11, fontWeight: 500, color: C.navMuted, textTransform: "uppercase", letterSpacing: 1 }}>Status</div>
             <div style={{ padding: "6px 24px", display: "flex", flexDirection: "column", gap: 8 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 13, color: C.navText }}>
-                <div style={{ width: 8, height: 8, borderRadius: "50%", background: C.pri }}/> Confirmed · {confirmed}
+                <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#dc3545" }}/> Busy · {confirmed}
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 13, color: C.navText }}>
-                <div style={{ width: 8, height: 8, borderRadius: "50%", border: `2px solid ${C.navMuted}` }}/> Tentative · {tentative}
+                <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#f59e0b" }}/> Tentative · {tentative}
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 13, color: C.navText }}>
+                <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e" }}/> Free · {freeCount}
               </div>
             </div>
 
@@ -316,7 +341,7 @@ export default function App() {
             {/* Semester info */}
             <div style={{ padding: "12px 24px", fontSize: 12, color: C.navMuted }}>
               <div style={{ fontWeight: 500 }}>Semester: Feb – Jul 2026</div>
-              <div style={{ marginTop: 2 }}>{EVENTS.length} events total</div>
+              <div style={{ marginTop: 2 }}>{events.length} events total</div>
             </div>
 
             <div className="nav-sep" />
@@ -328,10 +353,11 @@ export default function App() {
             </div>
             <div style={{ padding: "4px 16px 16px", display: "flex", flexDirection: "column", gap: 2 }}>
               {freeWeekends.map((fw, i) => (
-                <div key={i} onClick={() => { setMonth(fw.monthIdx); setNavOpen(false); }} style={{
+                <div key={i} onClick={() => { setHighlightedWeekend(fw); setMonth(fw.monthIdx); setNavOpen(false); }} style={{
                   display: "flex", alignItems: "center", gap: 10, padding: "8px 8px", borderRadius: 8, cursor: "pointer",
-                  background: fw.monthIdx === month ? "rgba(255,255,255,0.08)" : "transparent",
-                  transition: "background 0.15s",
+                  background: highlightedWeekend?.id === fw.id ? "rgba(34,197,94,0.2)" : fw.monthIdx === month ? "rgba(255,255,255,0.08)" : "transparent",
+                  border: highlightedWeekend?.id === fw.id ? "1px solid rgba(34,197,94,0.4)" : "1px solid transparent",
+                  transition: "all 0.15s",
                 }}>
                   <PlaneIcon size={16} color={C.navMuted} />
                   <div>
@@ -516,19 +542,23 @@ export default function App() {
                 <div style={{ fontSize: 11, fontWeight: 500, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: 12, padding: "0 8px" }}>Status</div>
                 <div style={{ padding: "0 8px", display: "flex", flexDirection: "column", gap: 6 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <div style={{ width: 8, height: 8, borderRadius: "50%", background: C.pri }} />
-                    <span style={{ fontSize: 12, color: C.text }}>Confirmed · <strong>{confirmed}</strong></span>
+                    <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#dc3545" }} />
+                    <span style={{ fontSize: 12, color: C.text }}>Busy · <strong>{confirmed}</strong></span>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <div style={{ width: 8, height: 8, borderRadius: "50%", border: `2px solid ${C.textMuted}`, background: "transparent" }} />
+                    <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#f59e0b" }} />
                     <span style={{ fontSize: 12, color: C.text }}>Tentative · <strong>{tentative}</strong></span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e" }} />
+                    <span style={{ fontSize: 12, color: C.text }}>Free · <strong>{freeCount}</strong></span>
                   </div>
                 </div>
               </div>
               <div style={{ borderTop: `1px solid ${C.border}`, marginTop: 16, paddingTop: 16, padding: "16px 8px 0" }}>
                 <div style={{ fontSize: 11, color: C.textMuted, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: 4 }}>Semester</div>
                 <div style={{ fontSize: 13, color: C.text }}>Feb – Jul 2026</div>
-                <div style={{ fontSize: 12, color: C.textSec, marginTop: 2 }}>{EVENTS.length} events total</div>
+                <div style={{ fontSize: 12, color: C.textSec, marginTop: 2 }}>{events.length} events total</div>
               </div>
               <div style={{ borderTop: `1px solid ${C.border}`, marginTop: 16, paddingTop: 16, padding: "16px 8px 0" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
@@ -537,10 +567,10 @@ export default function App() {
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                   {freeWeekends.map((fw, i) => (
-                    <div key={i} onClick={() => { setMonth(fw.monthIdx); }} style={{
+                    <div key={i} onClick={() => { setHighlightedWeekend(fw); setMonth(fw.monthIdx); }} style={{
                       display: "flex", alignItems: "center", gap: 8, padding: "5px 6px", borderRadius: 6, cursor: "pointer",
-                      background: fw.monthIdx === month ? C.free : "transparent",
-                      border: `1px solid ${fw.monthIdx === month ? C.freeBorder : "transparent"}`,
+                      background: highlightedWeekend?.id === fw.id ? "rgba(34,197,94,0.22)" : fw.monthIdx === month ? C.free : "transparent",
+                      border: `1px solid ${highlightedWeekend?.id === fw.id ? "rgba(34,197,94,0.5)" : fw.monthIdx === month ? C.freeBorder : "transparent"}`,
                       transition: "all 0.15s",
                     }}>
                       <PlaneIcon size={16} color={C.textMuted} />
@@ -621,13 +651,17 @@ export default function App() {
                   const isWeekend = i % 7 === 0 || i % 7 === 5 || i % 7 === 6;
                   const isFreeWeekend = cell.current && isWeekend && !hasEv;
                   const isInTodayCol = (i % 7) === todayCol && isMobile;
-                  const cellBg = isSelected ? C.priSoft : isInTodayCol ? C.priTint : hasEv ? C.unavailable : isFreeWeekend ? C.free : "#fff";
+                  const isHighlightedWeekend = highlightedWeekend && cell.current && (
+                    (highlightedWeekend.sat && cell.day === highlightedWeekend.sat.getDate() && month === highlightedWeekend.monthIdx) ||
+                    (highlightedWeekend.sun && cell.day === highlightedWeekend.sun.getDate() && month === highlightedWeekend.monthIdx)
+                  );
+                  const cellBg = isSelected ? C.priSoft : isHighlightedWeekend ? "rgba(34,197,94,0.22)" : isInTodayCol ? C.priTint : hasEv ? C.unavailable : isFreeWeekend ? C.free : "#fff";
                   return (
                     <div key={i} onClick={() => key && events.length && setSelected(isSelected ? null : key)} style={{
                       borderRight: (i + 1) % 7 !== 0 ? `1px solid ${C.border}` : "none",
                       borderBottom: `1px solid ${C.border}`, padding: isMobile ? "1px" : "4px 8px",
                       background: cellBg,
-                      borderLeft: hasEv ? `2px solid ${C.unavailableBorder}` : isFreeWeekend ? `2px solid ${C.freeBorder}` : "none",
+                      borderLeft: isHighlightedWeekend ? `3px solid rgba(34,197,94,0.5)` : hasEv ? `2px solid ${C.unavailableBorder}` : isFreeWeekend ? `2px solid ${C.freeBorder}` : "none",
                       cursor: events.length ? "pointer" : "default", minHeight: isMobile ? "56px" : 0,
                       overflow: "hidden", transition: "background 0.15s", opacity: cell.current ? 1 : 0.35,
                     }}>
@@ -662,13 +696,17 @@ export default function App() {
                       {events.map((ev, j) => {
                         const pc = PERSON_COLORS[ev.person] || PERSON_COLORS.kyle;
                         const isTentative = ev.status === "tentative";
+                        const isFree = ev.status === "free";
                         return (
                           <div key={j} onMouseEnter={() => !isMobile && setHovered(`${key}-${j}`)} onMouseLeave={() => !isMobile && setHovered(null)}
                             style={{
-                              fontSize: isMobile ? 9 : 11, fontWeight: 500, color: ev.person === "kyle" ? "#2c3e50" : "#fff", background: pc.chip,
+                              fontSize: isMobile ? 9 : 11, fontWeight: 500,
+                              color: isFree ? "#22c55e" : ev.person === "kyle" ? "#2c3e50" : "#fff",
+                              background: isFree ? "#f0fdf4" : pc.chip,
+                              border: isFree ? "1px solid rgba(34,197,94,0.25)" : "none",
                               borderRadius: isMobile ? 2 : 4, padding: isMobile ? "1.5px 3px" : "2px 6px",
                               margin: isMobile ? "0.5px 1px" : "0 0 2px 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", display: "block",
-                              opacity: hovered === `${key}-${j}` ? 0.85 : isTentative ? 0.7 : 1, transition: "opacity 0.15s",
+                              opacity: hovered === `${key}-${j}` ? 0.85 : isTentative ? 0.7 : isFree ? 0.8 : 1, transition: "opacity 0.15s",
                             }}>
                             {!isMobile && <span style={{ fontSize: 10, marginRight: 3, opacity: 0.75 }}>{ev.time}</span>}
                             {ev.title}
@@ -701,42 +739,119 @@ export default function App() {
 
         {/* EVENT DETAIL POPUP */}
         {selected && getFilteredEvents(selected).length > 0 && (
-          <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, display: "flex", alignItems: isMobile ? "flex-end" : "center", justifyContent: "center", background: "rgba(60,20,25,0.35)", zIndex: 150 }} onClick={() => setSelected(null)}>
+          <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, display: "flex", alignItems: isMobile ? "flex-end" : "center", justifyContent: "center", background: "rgba(60,20,25,0.45)", backdropFilter: "blur(3px)", zIndex: 150, animation: "fadeIn 0.2s ease" }} onClick={() => setSelected(null)}>
             <div onClick={e => e.stopPropagation()} style={{
-              background: "#fff", borderRadius: isMobile ? "16px 16px 0 0" : 12, padding: 0,
-              width: isMobile ? "100%" : "auto", minWidth: isMobile ? "100%" : 380, maxWidth: isMobile ? "100%" : 460,
-              maxHeight: isMobile ? "70vh" : "80vh", overflowY: "auto",
-              boxShadow: "0 -4px 24px rgba(139,26,43,0.18)",
+              background: "#fff", borderRadius: isMobile ? "20px 20px 0 0" : 12, padding: 0,
+              width: isMobile ? "100%" : "auto", minWidth: isMobile ? "100%" : 400, maxWidth: isMobile ? "100%" : 480,
+              maxHeight: isMobile ? "80vh" : "85vh", overflowY: "auto", overflow: "hidden",
+              boxShadow: "0 20px 60px rgba(139,26,43,0.25)",
+              animation: isMobile ? "slideUp 0.3s ease" : "popIn 0.25s ease",
             }}>
               {/* Drag handle on mobile */}
-              {isMobile && <div style={{ display: "flex", justifyContent: "center", padding: "10px 0 4px" }}><div style={{ width: 36, height: 4, borderRadius: 2, background: C.border }} /></div>}
+              {isMobile && <div style={{ display: "flex", justifyContent: "center", padding: "10px 0 2px" }}><div style={{ width: 36, height: 4, borderRadius: 2, background: C.border }} /></div>}
+
               {getFilteredEvents(selected).map((ev, i) => {
-                const isTentative = ev.status === "tentative";
                 const pc = PERSON_COLORS[ev.person] || PERSON_COLORS.kyle;
+                const sc = STATUS_CONFIG[ev.status] || STATUS_CONFIG.confirmed;
                 const evList = getFilteredEvents(selected);
+                const dateStr = new Date(ev.date + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
                 return (
-                  <div key={i}>
-                    <div style={{ height: 4, background: pc.chip, margin: isMobile ? "0 16px" : 0, borderRadius: isMobile ? 2 : 0 }} />
-                    <div style={{ padding: isMobile ? "16px 20px" : "20px 24px", borderBottom: i < evList.length - 1 ? `1px solid ${C.border}` : "none" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-                        <span style={{ fontSize: isMobile ? 18 : 22, fontWeight: 400, color: C.text, flex: 1 }}>{ev.title}</span>
-                        <span style={{ fontSize: 11, fontWeight: 500, padding: "3px 10px", borderRadius: 12, background: pc.soft, color: pc.chip }}>{pc.label}</span>
-                      </div>
-                      <div style={{ fontSize: 13, color: C.textSec, lineHeight: 1.8 }}>
-                        <div>{new Date(ev.date + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}</div>
-                        <div>🕐 {ev.time}</div>
-                        {ev.venue && <div>📍 {ev.venue}</div>}
-                        <div style={{ marginTop: 6 }}>
-                          <span style={{ fontSize: 11, fontWeight: 500, padding: "3px 10px", borderRadius: 12, background: isTentative ? "#fff5f6" : C.priSoft, color: isTentative ? C.textMuted : C.priDark }}>{ev.status}</span>
+                  <div key={ev.id}>
+                    {/* Colored header bar */}
+                    <div style={{
+                      background: `linear-gradient(135deg, ${pc.chip}, ${pc.chip}dd)`,
+                      padding: isMobile ? "18px 20px" : "22px 28px",
+                      position: "relative", overflow: "hidden",
+                    }}>
+                      <div style={{ position: "absolute", top: "-40%", right: "-8%", width: 160, height: 160, background: "rgba(255,255,255,0.06)", borderRadius: "50%" }} />
+                      {/* Close button */}
+                      <button onClick={() => setSelected(null)} style={{
+                        position: "absolute", top: 14, right: 14, width: 30, height: 30, border: "none",
+                        background: "rgba(255,255,255,0.15)", borderRadius: "50%", cursor: "pointer",
+                        display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s",
+                        color: ev.person === "kyle" ? "#2c3e50" : "#fff",
+                      }}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                      </button>
+                      <div style={{ display: "flex", alignItems: "center", gap: 14, position: "relative" }}>
+                        <div style={{ width: 44, height: 44, background: "rgba(255,255,255,0.15)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)" }}>
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill={ev.person === "kyle" ? "#2c3e50" : "#fff"}>
+                            <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>
+                          </svg>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: isMobile ? 17 : 19, fontWeight: 700, color: ev.person === "kyle" ? "#2c3e50" : "#fff", letterSpacing: "0.2px" }}>{ev.title}</div>
+                          <div style={{ fontSize: 12, color: ev.person === "kyle" ? "rgba(44,62,80,0.7)" : "rgba(255,255,255,0.8)", marginTop: 2 }}>{pc.label}'s Event</div>
                         </div>
                       </div>
                     </div>
+
+                    {/* Event details card */}
+                    <div style={{ padding: isMobile ? "20px 20px 16px" : "24px 28px 20px" }}>
+                      <div style={{ background: "#f8f9fa", border: `1px solid ${C.border}`, borderRadius: 8, padding: "16px 18px", marginBottom: 20 }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, color: C.textSec }}>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill={C.pri} opacity="0.6"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
+                            <span>{dateStr}</span>
+                          </div>
+                          <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, color: C.textSec }}>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill={C.pri} opacity="0.6"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/></svg>
+                            <span>{ev.time}</span>
+                          </div>
+                          {ev.venue && (
+                            <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, color: C.textSec }}>
+                              <svg width="15" height="15" viewBox="0 0 24 24" fill={C.pri} opacity="0.6"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+                              <span>{ev.venue}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Status selector */}
+                      <div style={{ marginBottom: 16 }}>
+                        <div style={{ fontSize: 11, fontWeight: 600, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: 10 }}>Your Availability</div>
+                        <div style={{ display: "flex", gap: 8 }}>
+                          {["confirmed", "tentative", "free"].map(s => {
+                            const cfg = STATUS_CONFIG[s];
+                            const isActive = ev.status === s;
+                            return (
+                              <button key={s} onClick={() => changeStatus(ev.id, s)} style={{
+                                flex: 1, padding: "10px 8px", border: `2px solid ${isActive ? cfg.color : C.border}`,
+                                borderRadius: 8, background: isActive ? cfg.bg : "#fff", cursor: "pointer",
+                                display: "flex", flexDirection: "column", alignItems: "center", gap: 5,
+                                transition: "all 0.2s ease",
+                                transform: isActive ? "scale(1.02)" : "scale(1)",
+                                boxShadow: isActive ? `0 2px 8px ${cfg.color}25` : "none",
+                              }}>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill={isActive ? cfg.color : C.textMuted}>
+                                  <path d={cfg.icon}/>
+                                </svg>
+                                <span style={{ fontSize: 11, fontWeight: isActive ? 700 : 500, color: isActive ? cfg.color : C.textSec }}>{cfg.label}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Current status indicator */}
+                      <div style={{
+                        display: "flex", alignItems: "center", justifyContent: "space-between",
+                        padding: "10px 14px", background: sc.bg, border: `1px solid ${sc.color}22`,
+                        borderRadius: 6, fontSize: 12,
+                      }}>
+                        <span style={{ color: C.textSec }}>Current Status</span>
+                        <span style={{ fontWeight: 700, color: sc.color, display: "flex", alignItems: "center", gap: 5 }}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill={sc.color}><path d={sc.icon}/></svg>
+                          {sc.label}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Separator between events */}
+                    {i < evList.length - 1 && <div style={{ height: 1, background: C.border, margin: "0 24px" }} />}
                   </div>
                 );
               })}
-              <div style={{ textAlign: "right", padding: "8px 16px 12px" }}>
-                <button onClick={() => setSelected(null)} style={{ background: "none", border: "none", color: C.pri, fontSize: 14, fontWeight: 500, cursor: "pointer", padding: "6px 12px", borderRadius: 4 }}>Close</button>
-              </div>
             </div>
           </div>
         )}
