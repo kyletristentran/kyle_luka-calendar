@@ -5,11 +5,10 @@ const C = {
   pri: "#8B1A2B", priDark: "#6b0f1e", priLight: "#a93545",
   priSoft: "#f5dde2", priTint: "rgba(139,26,43,0.06)",
   text: "#3c2025", textSec: "#7a4a52", textMuted: "#a8757e",
-  border: "#e8d0d5", bg: "#fff", bgSub: "#fdf6f7",
-  free: "rgba(139,26,43,0.04)", freeBorder: "rgba(139,26,43,0.12)",
-  kyle: "#1a73e8", kyleBg: "rgba(26,115,232,0.12)",
+  border: "#e8d0d5", bg: "#fff", bgSub: "#fff",
+  free: "rgba(34,197,94,0.08)", freeBorder: "rgba(34,197,94,0.2)",
+  kyle: "#89CFF0", kyleBg: "rgba(137,207,240,0.18)",
   luka: "#8B1A2B", lukaBg: "rgba(139,26,43,0.12)",
-  both: "#6d28d9", bothBg: "rgba(109,40,217,0.12)",
   // Nav drawer (dark like Google Calendar)
   nav: "#2d2d2d", navText: "#e0e0e0", navMuted: "#999",
   navHover: "#3a3a3a", navActive: "#1a73e8",
@@ -18,7 +17,6 @@ const C = {
 const PERSON_COLORS = {
   kyle: { chip: C.kyle, soft: C.kyleBg, label: "Kyle" },
   luka: { chip: C.luka, soft: C.lukaBg, label: "Luka" },
-  both: { chip: C.both, soft: C.bothBg, label: "Both" },
 };
 
 const EVENTS = [
@@ -38,33 +36,33 @@ const EVENTS = [
   { date: "2026-02-12", title: "RawCuts", venue: "Secret Location, BK", status: "confirmed", time: "10:00pm", person: "kyle" },
   { date: "2026-02-12", title: "WRIT 340: Submit Illumin Rough Draft", venue: "USC", status: "confirmed", time: "11:45pm", person: "kyle" },
   { date: "2026-02-13", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am", person: "kyle" },
-  { date: "2026-02-13", title: "Spring 26 Commencement", venue: "USC", status: "confirmed", time: "10:00pm", person: "both" },
+  { date: "2026-02-13", title: "Spring 26 Commencement", venue: "USC", status: "confirmed", time: "10:00pm", person: "luka" },
   { date: "2026-02-13", title: "Observational Analysis", venue: "USC", status: "confirmed", time: "11:59pm", person: "kyle" },
-  { date: "2026-02-14", title: "Valentine's Day", venue: "", status: "confirmed", time: "All day", person: "both" },
-  { date: "2026-02-16", title: "Presidents' Day", venue: "", status: "confirmed", time: "All day", person: "both" },
+  { date: "2026-02-14", title: "Valentine's Day", venue: "", status: "confirmed", time: "All day", person: "luka" },
+  { date: "2026-02-16", title: "Presidents' Day", venue: "", status: "confirmed", time: "All day", person: "luka" },
   { date: "2026-02-16", title: "TREA E-Board Meeting", venue: "USC", status: "confirmed", time: "3:00pm", person: "kyle" },
   { date: "2026-02-17", title: "WRIT 340: Illumin Oral Pres", venue: "USC", status: "confirmed", time: "5:00pm", person: "kyle" },
-  { date: "2026-02-18", title: "Dining Society Dinner", venue: "USC", status: "confirmed", time: "6:30pm", person: "both" },
+  { date: "2026-02-18", title: "Dining Society Dinner", venue: "USC", status: "confirmed", time: "6:30pm", person: "luka" },
   { date: "2026-02-18", title: "Final Draft Illumin", venue: "USC", status: "confirmed", time: "11:59pm", person: "kyle" },
   { date: "2026-02-19", title: "KT / Ray", venue: "USC", status: "confirmed", time: "10:30am", person: "kyle" },
   { date: "2026-02-19", title: "WRIT 340: Submit Illumin Final Draft", venue: "USC", status: "confirmed", time: "11:45pm", person: "kyle" },
-  { date: "2026-02-20", title: "Bedouin", venue: "Capitale, NY", status: "tentative", time: "10:00pm", person: "both" },
+  { date: "2026-02-20", title: "Bedouin", venue: "Capitale, NY", status: "tentative", time: "10:00pm", person: "luka" },
   { date: "2026-02-20", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am", person: "kyle" },
   { date: "2026-02-21", title: "Cassion", venue: "Navy Yard, BK", status: "confirmed", time: "10:00pm", person: "luka" },
-  { date: "2026-02-22", title: "Project Angel Food", venue: "USC", status: "confirmed", time: "12:45pm", person: "both" },
+  { date: "2026-02-22", title: "Project Angel Food", venue: "USC", status: "confirmed", time: "12:45pm", person: "luka" },
   { date: "2026-02-24", title: "Resume Review", venue: "USC", status: "tentative", time: "6:30pm", person: "kyle" },
-  { date: "2026-02-25", title: "Dining Society Dinner", venue: "USC", status: "confirmed", time: "6:30pm", person: "both" },
-  { date: "2026-02-26", title: "Lever Friends Hangout", venue: "USC", status: "confirmed", time: "6:00pm", person: "both" },
+  { date: "2026-02-25", title: "Dining Society Dinner", venue: "USC", status: "confirmed", time: "6:30pm", person: "luka" },
+  { date: "2026-02-26", title: "Lever Friends Hangout", venue: "USC", status: "confirmed", time: "6:00pm", person: "luka" },
   { date: "2026-02-27", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am", person: "kyle" },
   { date: "2026-03-01", title: "Tiki Disco Winter", venue: "Knockdown Center, BK", status: "confirmed", time: "10:00pm", person: "kyle" },
-  { date: "2026-03-20", title: "Prospa b2b Josh Baker", venue: "Navy Yard, BK", status: "tentative", time: "10:00pm", person: "both" },
-  { date: "2026-03-21", title: "Carl Cox", venue: "Navy Yard, BK", status: "tentative", time: "10:00pm", person: "both" },
-  { date: "2026-04-03", title: "SiDEPiECE", venue: "Navy Yard, BK", status: "tentative", time: "10:00pm", person: "both" },
-  { date: "2026-04-20", title: "Hot Since 82", venue: "House of Yes, BK", status: "confirmed", time: "10:00pm", person: "both" },
+  { date: "2026-03-20", title: "Prospa b2b Josh Baker", venue: "Navy Yard, BK", status: "tentative", time: "10:00pm", person: "luka" },
+  { date: "2026-03-21", title: "Carl Cox", venue: "Navy Yard, BK", status: "tentative", time: "10:00pm", person: "luka" },
+  { date: "2026-04-03", title: "SiDEPiECE", venue: "Navy Yard, BK", status: "tentative", time: "10:00pm", person: "luka" },
+  { date: "2026-04-20", title: "Hot Since 82", venue: "House of Yes, BK", status: "confirmed", time: "10:00pm", person: "luka" },
   { date: "2026-04-25", title: "CID", venue: "99 Scott, BK", status: "confirmed", time: "10:00pm", person: "kyle" },
   { date: "2026-05-23", title: "Solomun", venue: "Fulton Fish Market, QE", status: "confirmed", time: "10:00pm", person: "luka" },
-  { date: "2026-06-20", title: "Beltran", venue: "Navy Yard, BK", status: "tentative", time: "10:00pm", person: "both" },
-  { date: "2026-07-25", title: "Klangkunsler", venue: "Monegros Desert Festival, Frogo, SP", status: "confirmed", time: "All day", person: "both" },
+  { date: "2026-06-20", title: "Beltran", venue: "Navy Yard, BK", status: "tentative", time: "10:00pm", person: "luka" },
+  { date: "2026-07-25", title: "Klangkunsler", venue: "Monegros Desert Festival, Frogo, SP", status: "confirmed", time: "All day", person: "luka" },
 ];
 
 const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -91,7 +89,7 @@ export default function App() {
   const [month, setMonth] = useState(1);
   const [selected, setSelected] = useState(null);
   const [hovered, setHovered] = useState(null);
-  const [personFilter, setPersonFilter] = useState({ kyle: true, luka: true, both: true });
+  const [personFilter, setPersonFilter] = useState({ kyle: true, luka: true });
   const [navOpen, setNavOpen] = useState(false);
   const [mobileView, setMobileView] = useState("month");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -149,7 +147,6 @@ export default function App() {
 
   const kyleCount = EVENTS.filter(e => e.person === "kyle").length;
   const lukaCount = EVENTS.filter(e => e.person === "luka").length;
-  const bothCount = EVENTS.filter(e => e.person === "both").length;
   const confirmed = EVENTS.filter(e => e.status === "confirmed").length;
   const tentative = EVENTS.filter(e => e.status === "tentative").length;
 
@@ -252,14 +249,14 @@ export default function App() {
 
             {/* Person toggles */}
             <div style={{ padding: "8px 24px 4px", fontSize: 11, fontWeight: 500, color: C.navMuted, textTransform: "uppercase", letterSpacing: 1 }}>People</div>
-            {[["kyle","Kyle",C.kyle],["luka","Luka",C.luka],["both","Both",C.both]].map(([k,label,color]) => (
+            {[["kyle","Kyle",C.kyle],["luka","Luka",C.luka]].map(([k,label,color]) => (
               <button key={k} className="nav-item" onClick={() => togglePerson(k)} style={{ padding: "10px 24px" }}>
                 <div className="nav-check" style={{ background: personFilter[k] ? color : "transparent", border: personFilter[k] ? "none" : `2px solid ${C.navMuted}` }}>
-                  {personFilter[k] && <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg>}
+                  {personFilter[k] && <svg viewBox="0 0 24 24" fill="none" stroke={k === "kyle" ? "#333" : "#fff"} strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg>}
                 </div>
                 <span>{label}</span>
                 <span style={{ marginLeft: "auto", fontSize: 11, color: C.navMuted }}>
-                  {k === "kyle" ? kyleCount : k === "luka" ? lukaCount : bothCount}
+                  {k === "kyle" ? kyleCount : lukaCount}
                 </span>
               </button>
             ))}
@@ -329,13 +326,13 @@ export default function App() {
             </div>
             <span style={{ fontSize: 22, fontWeight: 400, color: C.text }}>{MONTH_NAMES[month]} {year}</span>
             <div style={{ marginLeft: "auto", display: "flex", gap: 8, alignItems: "center" }}>
-              {[["kyle","Kyle",C.kyle],["luka","Luka",C.luka],["both","Both",C.both]].map(([k,v,color]) => (
+              {[["kyle","Kyle",C.kyle],["luka","Luka",C.luka]].map(([k,v,color]) => (
                 <button key={k} className="person-chip" onClick={() => togglePerson(k)} style={{
                   background: personFilter[k] ? color : "#fff",
-                  color: personFilter[k] ? "#fff" : C.textSec,
+                  color: personFilter[k] ? (k === "kyle" ? "#333" : "#fff") : C.textSec,
                   borderColor: personFilter[k] ? "transparent" : C.border,
                 }}>
-                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: personFilter[k] ? "#fff" : color, display: "inline-block" }} />
+                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: personFilter[k] ? (k === "kyle" ? "#333" : "#fff") : color, display: "inline-block" }} />
                   {v}
                 </button>
               ))}
@@ -380,7 +377,7 @@ export default function App() {
               <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 16 }}>
                 <div style={{ fontSize: 11, fontWeight: 500, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: 12, padding: "0 8px" }}>By Person</div>
                 <div style={{ padding: "0 8px", display: "flex", flexDirection: "column", gap: 6 }}>
-                  {[["kyle","Kyle",C.kyle,kyleCount],["luka","Luka",C.luka,lukaCount],["both","Both",C.both,bothCount]].map(([k,label,color,count]) => (
+                  {[["kyle","Kyle",C.kyle,kyleCount],["luka","Luka",C.luka,lukaCount]].map(([k,label,color,count]) => (
                     <div key={k} onClick={() => togglePerson(k)} style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", padding: "4px 0" }}>
                       <div style={{ width: 10, height: 10, borderRadius: "50%", background: personFilter[k] ? color : "transparent", border: personFilter[k] ? "none" : `2px solid ${C.textMuted}`, flexShrink: 0 }} />
                       <span style={{ fontSize: 12, color: C.text, flex: 1, fontWeight: personFilter[k] ? 500 : 400, opacity: personFilter[k] ? 1 : 0.5 }}>{label}</span>
@@ -490,7 +487,7 @@ export default function App() {
                       borderBottom: `1px solid ${C.border}`, padding: isMobile ? "1px" : "4px 8px",
                       background: cellBg,
                       borderLeft: hasEv && !isMobile ? `3px solid ${PERSON_COLORS[events[0]?.person]?.chip || C.pri}` : isFreeWeekend ? `2px solid ${C.freeBorder}` : "none",
-                      cursor: events.length ? "pointer" : "default", minHeight: isMobile ? "80px" : 0,
+                      cursor: events.length ? "pointer" : "default", minHeight: isMobile ? "56px" : 0,
                       overflow: "hidden", transition: "background 0.15s", opacity: cell.current ? 1 : 0.35,
                     }}>
                       <div style={{ marginBottom: 2, textAlign: isMobile ? "center" : "left" }}>
@@ -510,7 +507,7 @@ export default function App() {
                         return (
                           <div key={j} onMouseEnter={() => !isMobile && setHovered(`${key}-${j}`)} onMouseLeave={() => !isMobile && setHovered(null)}
                             style={{
-                              fontSize: isMobile ? 9 : 11, fontWeight: 500, color: "#fff", background: pc.chip,
+                              fontSize: isMobile ? 9 : 11, fontWeight: 500, color: ev.person === "kyle" ? "#2c3e50" : "#fff", background: pc.chip,
                               borderRadius: isMobile ? 2 : 4, padding: isMobile ? "1.5px 3px" : "2px 6px",
                               margin: isMobile ? "0.5px 1px" : "0 0 2px 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", display: "block",
                               opacity: hovered === `${key}-${j}` ? 0.85 : isTentative ? 0.7 : 1, transition: "opacity 0.15s",
