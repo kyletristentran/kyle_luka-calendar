@@ -2,59 +2,68 @@ import { useState, useMemo, useEffect } from "react";
 
 /* ── Maroon/Burgundy Palette ── */
 const C = {
-  pri: "#8B1A2B",       // primary maroon
-  priDark: "#6b0f1e",   // darker maroon for text
-  priLight: "#a93545",   // lighter maroon for hover
-  priSoft: "#f5dde2",   // soft pink background
-  priTint: "rgba(139,26,43,0.06)", // very subtle tint
-  priChip: "#8B1A2B",   // chip bg
-  priBorder: "rgba(139,26,43,0.25)",
-  text: "#3c2025",      // dark brownish for body text
-  textSec: "#7a4a52",   // secondary text
-  textMuted: "#a8757e",  // muted
-  border: "#e8d0d5",    // borders - pinkish gray
+  pri: "#8B1A2B",
+  priDark: "#6b0f1e",
+  priLight: "#a93545",
+  priSoft: "#f5dde2",
+  priTint: "rgba(139,26,43,0.06)",
+  text: "#3c2025",
+  textSec: "#7a4a52",
+  textMuted: "#a8757e",
+  border: "#e8d0d5",
   bg: "#fff",
-  bgSub: "#fdf6f7",     // subtle warm background
-  today: "#8B1A2B",
+  bgSub: "#fdf6f7",
   free: "rgba(139,26,43,0.04)",
   freeBorder: "rgba(139,26,43,0.12)",
+  kyle: "#1a73e8",
+  kyleBg: "rgba(26,115,232,0.12)",
+  luka: "#8B1A2B",
+  lukaBg: "rgba(139,26,43,0.12)",
+  both: "#6d28d9",
+  bothBg: "rgba(109,40,217,0.12)",
+};
+
+const PERSON_COLORS = {
+  kyle:  { bg: C.kyle, chip: C.kyle, soft: C.kyleBg, label: "Kyle" },
+  luka:  { bg: C.luka, chip: C.luka, soft: C.lukaBg, label: "Luka" },
+  both:  { bg: C.both, chip: C.both, soft: C.bothBg, label: "Both" },
 };
 
 const EVENTS = [
   // Week 1
-  { date: "2026-02-02", title: "KT / Dr. Arthur", venue: "USC", status: "confirmed", time: "12:30pm" },
-  { date: "2026-02-02", title: "Tutoring - Noah", venue: "USC", status: "confirmed", time: "5:00pm" },
-  { date: "2026-02-03", title: "WRIT 340: Submit Student Profile", venue: "USC", status: "confirmed", time: "11:45pm" },
-  { date: "2026-02-04", title: "USC HOLD - TRE", venue: "USC", status: "confirmed", time: "2:00pm" },
-  { date: "2026-02-04", title: "Tutoring - Kenne", venue: "USC", status: "confirmed", time: "5:00pm" },
-  { date: "2026-02-05", title: "KT / Devon - The...", venue: "USC", status: "confirmed", time: "1:00pm" },
-  { date: "2026-02-05", title: "WRIT 340: Email Illumin article topics", venue: "USC", status: "confirmed", time: "11:45pm" },
-  { date: "2026-02-05", title: "Illumin Oral Pres", venue: "USC", status: "confirmed", time: "11:59pm" },
-  { date: "2026-02-06", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am" },
-  { date: "2026-02-06", title: "Tutoring - Erwin", venue: "USC", status: "confirmed", time: "1:00pm" },
+  { date: "2026-02-02", title: "KT / Dr. Arthur", venue: "USC", status: "confirmed", time: "12:30pm", person: "kyle" },
+  { date: "2026-02-02", title: "Tutoring - Noah", venue: "USC", status: "confirmed", time: "5:00pm", person: "kyle" },
+  { date: "2026-02-03", title: "WRIT 340: Submit Student Profile", venue: "USC", status: "confirmed", time: "11:45pm", person: "kyle" },
+  { date: "2026-02-04", title: "USC HOLD - TRE", venue: "USC", status: "confirmed", time: "2:00pm", person: "kyle" },
+  { date: "2026-02-04", title: "Tutoring - Kenne", venue: "USC", status: "confirmed", time: "5:00pm", person: "kyle" },
+  { date: "2026-02-05", title: "KT / Devon - Therapy", venue: "USC", status: "confirmed", time: "1:00pm", person: "kyle" },
+  { date: "2026-02-05", title: "WRIT 340: Email Illumin Topics", venue: "USC", status: "confirmed", time: "11:45pm", person: "kyle" },
+  { date: "2026-02-05", title: "Illumin Oral Pres", venue: "USC", status: "confirmed", time: "11:59pm", person: "kyle" },
+  { date: "2026-02-06", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am", person: "kyle" },
+  { date: "2026-02-06", title: "Tutoring - Erwin", venue: "USC", status: "confirmed", time: "1:00pm", person: "kyle" },
   // Week 2
-  { date: "2026-02-09", title: "KT / Meina", venue: "USC", status: "confirmed", time: "2:00pm" },
-  { date: "2026-02-10", title: "KT / SkinFX", venue: "USC", status: "confirmed", time: "10:30am" },
-  { date: "2026-02-12", title: "WRIT 340: Submit Illumin rough draft", venue: "USC", status: "confirmed", time: "11:45pm" },
-  { date: "2026-02-13", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am" },
-  { date: "2026-02-13", title: "Spring 26 Com", venue: "USC", status: "confirmed", time: "10:00pm" },
-  { date: "2026-02-13", title: "Observational A", venue: "USC", status: "confirmed", time: "11:59pm" },
-  { date: "2026-02-14", title: "Valentine's Day", venue: "", status: "confirmed", time: "All day" },
+  { date: "2026-02-09", title: "KT / Meina", venue: "USC", status: "confirmed", time: "2:00pm", person: "kyle" },
+  { date: "2026-02-10", title: "KT / SkinFX", venue: "USC", status: "confirmed", time: "10:30am", person: "kyle" },
+  { date: "2026-02-12", title: "WRIT 340: Submit Illumin Rough Draft", venue: "USC", status: "confirmed", time: "11:45pm", person: "kyle" },
+  { date: "2026-02-13", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am", person: "kyle" },
+  { date: "2026-02-13", title: "Spring 26 Commencement", venue: "USC", status: "confirmed", time: "10:00pm", person: "both" },
+  { date: "2026-02-13", title: "Observational Analysis", venue: "USC", status: "confirmed", time: "11:59pm", person: "kyle" },
+  { date: "2026-02-14", title: "Valentine's Day", venue: "", status: "confirmed", time: "All day", person: "both" },
   // Week 3
-  { date: "2026-02-16", title: "Presidents' Day", venue: "", status: "confirmed", time: "All day" },
-  { date: "2026-02-16", title: "TREA E-Board Meeting", venue: "USC", status: "confirmed", time: "3:00pm" },
-  { date: "2026-02-17", title: "WRIT 340: Illumin oral pres", venue: "USC", status: "confirmed", time: "5:00pm" },
-  { date: "2026-02-18", title: "Dining Society D", venue: "USC", status: "confirmed", time: "6:30pm" },
-  { date: "2026-02-18", title: "Final Draft Illumin", venue: "USC", status: "confirmed", time: "11:59pm" },
-  { date: "2026-02-19", title: "KT / Ray", venue: "USC", status: "confirmed", time: "10:30am" },
-  { date: "2026-02-19", title: "WRIT 340: Submit Illumin final draft", venue: "USC", status: "confirmed", time: "11:45pm" },
-  { date: "2026-02-20", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am" },
+  { date: "2026-02-16", title: "Presidents' Day", venue: "", status: "confirmed", time: "All day", person: "both" },
+  { date: "2026-02-16", title: "TREA E-Board Meeting", venue: "USC", status: "confirmed", time: "3:00pm", person: "kyle" },
+  { date: "2026-02-17", title: "WRIT 340: Illumin Oral Pres", venue: "USC", status: "confirmed", time: "5:00pm", person: "kyle" },
+  { date: "2026-02-18", title: "Dining Society Dinner", venue: "USC", status: "confirmed", time: "6:30pm", person: "both" },
+  { date: "2026-02-18", title: "Final Draft Illumin", venue: "USC", status: "confirmed", time: "11:59pm", person: "kyle" },
+  { date: "2026-02-19", title: "KT / Ray", venue: "USC", status: "confirmed", time: "10:30am", person: "kyle" },
+  { date: "2026-02-19", title: "WRIT 340: Submit Illumin Final Draft", venue: "USC", status: "confirmed", time: "11:45pm", person: "kyle" },
+  { date: "2026-02-20", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am", person: "kyle" },
   // Week 4
-  { date: "2026-02-22", title: "Project Angel F", venue: "USC", status: "confirmed", time: "12:45pm" },
-  { date: "2026-02-24", title: "Resume Review", venue: "USC", status: "tentative", time: "6:30pm" },
-  { date: "2026-02-25", title: "Dining Society D", venue: "USC", status: "confirmed", time: "6:30pm" },
-  { date: "2026-02-26", title: "Lever Friends Ha", venue: "USC", status: "confirmed", time: "6:00pm" },
-  { date: "2026-02-27", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am" },
+  { date: "2026-02-22", title: "Project Angel Food", venue: "USC", status: "confirmed", time: "12:45pm", person: "both" },
+  { date: "2026-02-24", title: "Resume Review", venue: "USC", status: "tentative", time: "6:30pm", person: "kyle" },
+  { date: "2026-02-25", title: "Dining Society Dinner", venue: "USC", status: "confirmed", time: "6:30pm", person: "both" },
+  { date: "2026-02-26", title: "Lever Friends Hangout", venue: "USC", status: "confirmed", time: "6:00pm", person: "both" },
+  { date: "2026-02-27", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am", person: "kyle" },
 ];
 
 const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -77,6 +86,7 @@ export default function App() {
   const [month, setMonth] = useState(1);
   const [selected, setSelected] = useState(null);
   const [hovered, setHovered] = useState(null);
+  const [personFilter, setPersonFilter] = useState("all"); // all, kyle, luka, both
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -112,7 +122,18 @@ export default function App() {
     return c;
   }, [firstDay, daysInMonth]);
 
-  const hasEvent = (d) => !!eventMap[fmtKey(year, month, d)];
+  // Filter events by person
+  const getFilteredEvents = (key) => {
+    const evs = eventMap[key] || [];
+    if (personFilter === "all") return evs;
+    return evs.filter(e => e.person === personFilter);
+  };
+
+  const hasEvent = (d) => getFilteredEvents(fmtKey(year, month, d)).length > 0;
+
+  const kyleCount = EVENTS.filter(e => e.person === "kyle").length;
+  const lukaCount = EVENTS.filter(e => e.person === "luka").length;
+  const bothCount = EVENTS.filter(e => e.person === "both").length;
   const confirmed = EVENTS.filter(e => e.status === "confirmed").length;
   const tentative = EVENTS.filter(e => e.status === "tentative").length;
 
@@ -135,6 +156,13 @@ export default function App() {
         }
         .month-tab:active { background: ${C.priSoft}; }
         .month-tab.active { background: ${C.pri}; color: #fff; border-color: ${C.pri}; }
+        .person-chip {
+          font-family: 'Google Sans', sans-serif; font-size: 12px; font-weight: 500;
+          padding: 5px 14px; border-radius: 20px; border: 1.5px solid ${C.border};
+          background: #fff; cursor: pointer; white-space: nowrap; transition: all 0.15s;
+          display: inline-flex; align-items: center; gap: 6px;
+        }
+        .person-chip:hover { opacity: 0.85; }
         .fab {
           position: fixed; bottom: 24px; right: 20px; width: 56px; height: 56px; border-radius: 16px;
           background: ${C.pri}; box-shadow: 0 2px 12px rgba(139,26,43,0.3);
@@ -164,11 +192,23 @@ export default function App() {
                   <text x="12" y="17" textAnchor="middle" fontSize="9" fontWeight="700" fill={C.pri}>{today.getDate()}</text>
                 </svg>
               </button>
-              <div style={{ width: 32, height: 32, borderRadius: "50%", background: C.pri, border: `2px solid ${C.priLight}` }}/>
             </div>
             <div className="month-tabs">
               {SHORT_MONTHS.map((m, i) => (
                 <button key={i} className={`month-tab ${i === month ? 'active' : ''}`} onClick={() => setMonth(i)}>{m}</button>
+              ))}
+            </div>
+            {/* Mobile person filter */}
+            <div style={{ display: "flex", gap: 6, padding: "0 16px 10px", overflowX: "auto", scrollbarWidth: "none" }}>
+              {[["all","All"],["kyle","Kyle"],["luka","Luka"],["both","Both"]].map(([k,v]) => (
+                <button key={k} className="person-chip" onClick={() => setPersonFilter(k)} style={{
+                  background: personFilter === k ? (k === "all" ? C.pri : PERSON_COLORS[k]?.chip || C.pri) : "#fff",
+                  color: personFilter === k ? "#fff" : C.textSec,
+                  borderColor: personFilter === k ? "transparent" : C.border,
+                }}>
+                  {k !== "all" && <span style={{ width: 8, height: 8, borderRadius: "50%", background: personFilter === k ? "#fff" : PERSON_COLORS[k]?.chip || C.pri }} />}
+                  {v}
+                </button>
               ))}
             </div>
           </>
@@ -182,7 +222,7 @@ export default function App() {
                 <rect width="36" height="36" rx="4" fill={C.pri}/>
                 <text x="18" y="25" textAnchor="middle" fill="#fff" fontSize="18" fontWeight="700" fontFamily="Google Sans, sans-serif">{today.getDate()}</text>
               </svg>
-              <span style={{ fontSize: 22, fontWeight: 400, color: C.text }}>Calendar</span>
+              <span style={{ fontSize: 22, fontWeight: 400, color: C.text }}>Kyle & Luka's Calendar</span>
             </div>
             <button onClick={() => { setYear(today.getFullYear()); setMonth(today.getMonth()); }} style={{ border: `1px solid ${C.border}`, borderRadius: 4, padding: "6px 20px", background: "#fff", fontSize: 14, fontWeight: 500, color: C.pri, cursor: "pointer", marginLeft: 16 }}>Today</button>
             <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
@@ -190,7 +230,19 @@ export default function App() {
               <button onClick={next} style={{ background: "none", border: "none", cursor: "pointer", padding: 8, borderRadius: "50%", display: "flex", alignItems: "center", color: C.textSec, fontSize: 20 }}>›</button>
             </div>
             <span style={{ fontSize: 22, fontWeight: 400, color: C.text }}>{MONTH_NAMES[month]} {year}</span>
-            <div style={{ marginLeft: "auto", fontSize: 14, color: C.pri, border: `1px solid ${C.border}`, borderRadius: 4, padding: "6px 16px" }}>Month</div>
+            {/* Desktop person filter */}
+            <div style={{ marginLeft: "auto", display: "flex", gap: 8, alignItems: "center" }}>
+              {[["all","All"],["kyle","Kyle"],["luka","Luka"],["both","Both"]].map(([k,v]) => (
+                <button key={k} className="person-chip" onClick={() => setPersonFilter(k)} style={{
+                  background: personFilter === k ? (k === "all" ? C.pri : PERSON_COLORS[k]?.chip || C.pri) : "#fff",
+                  color: personFilter === k ? "#fff" : C.textSec,
+                  borderColor: personFilter === k ? "transparent" : C.border,
+                }}>
+                  {k !== "all" && <span style={{ width: 8, height: 8, borderRadius: "50%", background: personFilter === k ? "#fff" : PERSON_COLORS[k]?.chip || C.pri, display: "inline-block" }} />}
+                  {v}
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
@@ -229,8 +281,22 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Status Legend */}
+              {/* Person Legend */}
               <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 16 }}>
+                <div style={{ fontSize: 11, fontWeight: 500, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: 12, padding: "0 8px" }}>By Person</div>
+                <div style={{ padding: "0 8px", display: "flex", flexDirection: "column", gap: 6 }}>
+                  {[["kyle","Kyle",C.kyle,kyleCount],["luka","Luka",C.luka,lukaCount],["both","Both",C.both,bothCount]].map(([k,label,color,count]) => (
+                    <div key={k} onClick={() => setPersonFilter(personFilter === k ? "all" : k)} style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", padding: "4px 0", borderRadius: 4 }}>
+                      <div style={{ width: 10, height: 10, borderRadius: "50%", background: color, flexShrink: 0 }} />
+                      <span style={{ fontSize: 12, color: C.text, flex: 1, fontWeight: personFilter === k ? 600 : 400 }}>{label}</span>
+                      <span style={{ fontSize: 11, color: C.textMuted, fontWeight: 500 }}>{count}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Status Legend */}
+              <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 16, marginTop: 16 }}>
                 <div style={{ fontSize: 11, fontWeight: 500, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: 12, padding: "0 8px" }}>Status</div>
                 <div style={{ padding: "0 8px", display: "flex", flexDirection: "column", gap: 6 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -272,7 +338,7 @@ export default function App() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gridTemplateRows: "repeat(6, 1fr)", flex: 1, padding: isMobile ? "0 2px" : "0" }}>
               {cells.map((cell, i) => {
                 const key = cell.current ? fmtKey(year, month, cell.day) : null;
-                const events = key ? (eventMap[key] || []) : [];
+                const events = key ? getFilteredEvents(key) : [];
                 const t = cell.current && isToday(cell.day);
                 const isSelected = key && selected === key;
                 const hasEv = events.length > 0;
@@ -290,7 +356,7 @@ export default function App() {
                     borderBottom: `1px solid ${C.border}`,
                     padding: isMobile ? "1px" : "4px 8px",
                     background: cellBg,
-                    borderLeft: hasEv && !isMobile ? `3px solid ${C.pri}`
+                    borderLeft: hasEv && !isMobile ? `3px solid ${PERSON_COLORS[events[0]?.person]?.chip || C.pri}`
                       : isFreeWeekend ? `3px solid ${C.freeBorder}` : "none",
                     cursor: events.length ? "pointer" : "default",
                     minHeight: isMobile ? "88px" : 0,
@@ -305,7 +371,7 @@ export default function App() {
                         width: t ? (isMobile ? 24 : 26) : "auto",
                         height: t ? (isMobile ? 24 : 26) : "auto",
                         borderRadius: "50%", background: t ? C.pri : "transparent",
-                        color: t ? "#fff" : cell.current ? C.text : (isMobile ? C.textMuted : C.textMuted),
+                        color: t ? "#fff" : cell.current ? C.text : C.textMuted,
                       }}>{cell.day}</span>
                     </div>
 
@@ -319,9 +385,10 @@ export default function App() {
                       }}>✈ available</div>
                     )}
 
-                    {/* Event chips */}
+                    {/* Event chips - color coded by person */}
                     {events.map((ev, j) => {
                       const isTentative = ev.status === "tentative";
+                      const pc = PERSON_COLORS[ev.person] || PERSON_COLORS.kyle;
                       return (
                         <div key={j}
                           onMouseEnter={() => !isMobile && setHovered(`${key}-${j}`)}
@@ -330,7 +397,7 @@ export default function App() {
                             fontSize: isMobile ? 9 : 11,
                             fontWeight: 500,
                             color: "#fff",
-                            background: C.pri,
+                            background: pc.chip,
                             borderRadius: isMobile ? 2 : 4,
                             padding: isMobile ? "1.5px 3px" : "2px 6px",
                             margin: isMobile ? "0.5px 1px" : "0 0 2px 0",
@@ -341,7 +408,7 @@ export default function App() {
                             opacity: hovered === `${key}-${j}` ? 0.85 : isTentative ? 0.7 : 1,
                             transition: "opacity 0.15s",
                             borderLeft: isTentative && !isMobile ? "3px dashed rgba(255,255,255,0.5)" : "none",
-                            border: isTentative && isMobile ? `1px solid ${C.priLight}` : "none",
+                            border: isTentative && isMobile ? `1px solid ${pc.chip}` : "none",
                           }}>
                           {!isMobile && <span style={{ fontSize: 10, marginRight: 3, opacity: 0.75 }}>{ev.time}</span>}
                           {ev.title}
@@ -365,16 +432,21 @@ export default function App() {
         </button>
 
         {/* EVENT DETAIL POPUP */}
-        {selected && eventMap[selected] && (
+        {selected && getFilteredEvents(selected).length > 0 && (
           <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(60,20,25,0.35)", zIndex: 100 }} onClick={() => setSelected(null)}>
             <div onClick={e => e.stopPropagation()} style={{ background: "#fff", borderRadius: 12, padding: 0, minWidth: isMobile ? "90%" : 380, maxWidth: isMobile ? "90%" : 460, boxShadow: "0 24px 48px rgba(139,26,43,0.18)", overflow: "hidden" }}>
-              {eventMap[selected].map((ev, i) => {
+              {getFilteredEvents(selected).map((ev, i) => {
                 const isTentative = ev.status === "tentative";
+                const pc = PERSON_COLORS[ev.person] || PERSON_COLORS.kyle;
+                const evList = getFilteredEvents(selected);
                 return (
                   <div key={i}>
-                    <div style={{ height: 6, background: C.pri }} />
-                    <div style={{ padding: "20px 24px", borderBottom: i < eventMap[selected].length - 1 ? `1px solid ${C.border}` : "none" }}>
-                      <div style={{ fontSize: 22, fontWeight: 400, color: C.text, marginBottom: 12 }}>{ev.title}</div>
+                    <div style={{ height: 6, background: pc.chip }} />
+                    <div style={{ padding: "20px 24px", borderBottom: i < evList.length - 1 ? `1px solid ${C.border}` : "none" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+                        <span style={{ fontSize: 22, fontWeight: 400, color: C.text, flex: 1 }}>{ev.title}</span>
+                        <span style={{ fontSize: 11, fontWeight: 500, padding: "3px 10px", borderRadius: 12, background: pc.soft, color: pc.chip }}>{pc.label}</span>
+                      </div>
                       <div style={{ fontSize: 14, color: C.textSec, lineHeight: 1.8 }}>
                         <div>{new Date(ev.date + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}</div>
                         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
