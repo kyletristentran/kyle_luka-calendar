@@ -182,12 +182,20 @@ export default function App() {
               const events = key ? (eventMap[key] || []) : [];
               const t = cell.current && isToday(cell.day);
               const isSelected = key && selected === key;
+              const hasEv = events.length > 0;
+              const evPerson = hasEv ? events[0].person : null;
+              const cellTint = isSelected ? "#e8f0fe"
+                : hasEv && evPerson === "kyle" ? "rgba(91,164,207,0.08)"
+                : hasEv && evPerson === "luka" ? "rgba(139,26,43,0.08)"
+                : hasEv && evPerson === "both" ? "rgba(139,26,43,0.05)"
+                : "#fff";
               return (
                 <div key={i} onClick={() => key && events.length && setSelected(isSelected ? null : key)} style={{
                   borderRight: (i + 1) % 7 !== 0 ? "1px solid #dadce0" : "none",
                   borderBottom: "1px solid #dadce0",
                   padding: "4px 8px",
-                  background: isSelected ? "#e8f0fe" : "#fff",
+                  background: cellTint,
+                  borderLeft: hasEv ? `3px solid ${evPerson === "kyle" ? "#5BA4CF" : evPerson === "luka" ? "#8B1A2B" : "#7a5f7b"}` : "none",
                   cursor: events.length ? "pointer" : "default",
                   minHeight: 0, overflow: "hidden",
                   transition: "background 0.15s",
