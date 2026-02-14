@@ -7,8 +7,9 @@ const C = {
   text: "#3c2025", textSec: "#7a4a52", textMuted: "#a8757e",
   border: "#e8d0d5", bg: "#fff", bgSub: "#fff",
   free: "rgba(34,197,94,0.08)", freeBorder: "rgba(34,197,94,0.2)",
-  kyle: "#89CFF0", kyleBg: "rgba(137,207,240,0.18)",
+  kyle: "#E6F4FF", kyleBg: "rgba(230,244,255,0.18)",
   luka: "#8B1A2B", lukaBg: "rgba(139,26,43,0.12)",
+  unavailable: "rgba(239,68,68,0.08)", unavailableBorder: "rgba(239,68,68,0.15)",
   // Nav drawer (dark like Google Calendar)
   nav: "#2d2d2d", navText: "#e0e0e0", navMuted: "#999",
   navHover: "#3a3a3a", navActive: "#1a73e8",
@@ -18,6 +19,12 @@ const PERSON_COLORS = {
   kyle: { chip: C.kyle, soft: C.kyleBg, label: "Kyle" },
   luka: { chip: C.luka, soft: C.lukaBg, label: "Luka" },
 };
+
+const PlaneIcon = ({ size = 14, color = "currentColor", style = {} }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0, ...style }}>
+    <path d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0 0 11.5 2 1.5 1.5 0 0 0 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" fill={color}/>
+  </svg>
+);
 
 const EVENTS = [
   { date: "2026-02-02", title: "KT / Dr. Arthur", venue: "USC", status: "confirmed", time: "12:30pm", person: "kyle" },
@@ -316,7 +323,7 @@ export default function App() {
 
             {/* Free for flights */}
             <div style={{ padding: "8px 24px 4px", fontSize: 11, fontWeight: 500, color: C.navMuted, textTransform: "uppercase", letterSpacing: 1 }}>
-              ✈ Free for Flights
+              <PlaneIcon size={12} color={C.navMuted} style={{ display: "inline", verticalAlign: "middle", marginRight: 4 }} /> Free for Flights
               <span style={{ marginLeft: 6, fontSize: 10, background: "rgba(255,255,255,0.1)", borderRadius: 8, padding: "1px 6px" }}>{freeWeekends.length}</span>
             </div>
             <div style={{ padding: "4px 16px 16px", display: "flex", flexDirection: "column", gap: 2 }}>
@@ -326,7 +333,7 @@ export default function App() {
                   background: fw.monthIdx === month ? "rgba(255,255,255,0.08)" : "transparent",
                   transition: "background 0.15s",
                 }}>
-                  <span style={{ fontSize: 14 }}>✈</span>
+                  <PlaneIcon size={16} color={C.navMuted} />
                   <div>
                     <div style={{ fontSize: 13, fontWeight: 500, color: C.navText }}>{fw.label}</div>
                     <div style={{ fontSize: 10, color: C.navMuted }}>Weekend free</div>
@@ -340,23 +347,88 @@ export default function App() {
         {/* ═══ MOBILE TOP BAR ═══ */}
         {isMobile && (
           <>
-            <div style={{ display: "flex", alignItems: "center", padding: "8px 12px", gap: 8 }}>
+            {/* Main header row */}
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              padding: "8px 12px",
+              gap: 8,
+              borderBottom: `1px solid ${C.border}`,
+              flexWrap: "wrap"
+            }}>
+              {/* Hamburger menu */}
               <button className="hamburger" onClick={() => setNavOpen(true)}>
                 <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
                 </svg>
               </button>
-              <div style={{ fontSize: 20, fontWeight: 400, flex: 1, color: C.pri }}>{MONTH_NAMES[month]} {year}</div>
-              <button className="top-btn" onClick={() => { setYear(today.getFullYear()); setMonth(today.getMonth()); }}>
-                <svg width="20" height="20" fill={C.pri} viewBox="0 0 24 24">
-                  <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
-                  <text x="12" y="17" textAnchor="middle" fontSize="9" fontWeight="700" fill={C.pri}>{today.getDate()}</text>
+
+              {/* Calendar icon + title */}
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <svg width="32" height="32" viewBox="0 0 36 36">
+                  <rect width="36" height="36" rx="4" fill={C.pri}/>
+                  <text x="18" y="25" textAnchor="middle" fill="#fff" fontSize="16" fontWeight="700" fontFamily="Google Sans">{today.getDate()}</text>
                 </svg>
+                <span style={{ fontSize: 16, fontWeight: 400, color: C.text }}>Kyle & Luka's Calendar</span>
+              </div>
+
+              {/* Today button */}
+              <button
+                onClick={() => { setYear(today.getFullYear()); setMonth(today.getMonth()); }}
+                style={{
+                  border: `1px solid ${C.border}`,
+                  borderRadius: 4,
+                  padding: "4px 12px",
+                  background: "#fff",
+                  fontSize: 12,
+                  fontWeight: 500,
+                  color: C.pri,
+                  cursor: "pointer",
+                  marginLeft: "auto"
+                }}>
+                Today
               </button>
+
+              {/* Navigation arrows */}
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <button onClick={prev} style={{ background: "none", border: "none", cursor: "pointer", padding: 10, borderRadius: "50%", display: "flex", alignItems: "center", color: C.textSec, fontSize: 26 }}>‹</button>
+                <button onClick={next} style={{ background: "none", border: "none", cursor: "pointer", padding: 10, borderRadius: "50%", display: "flex", alignItems: "center", color: C.textSec, fontSize: 26 }}>›</button>
+              </div>
+
+              {/* Month Year */}
+              <span style={{ fontSize: 16, fontWeight: 400, color: C.text }}>{MONTH_NAMES[month]} {year}</span>
             </div>
-            <div className="month-tabs">
-              {SHORT_MONTHS.map((m, i) => (
-                <button key={i} className={`month-tab ${i === month ? 'active' : ''}`} onClick={() => setMonth(i)}>{m}</button>
+
+            {/* Person filter chips row */}
+            <div style={{
+              display: "flex",
+              gap: 6,
+              padding: "8px 12px",
+              borderBottom: `1px solid ${C.border}`,
+              overflowX: "auto"
+            }}>
+              {[["kyle","Kyle",C.kyle],["luka","Luka",C.luka]].map(([k,v,color]) => (
+                <button
+                  key={k}
+                  className="person-chip"
+                  onClick={() => togglePerson(k)}
+                  style={{
+                    background: personFilter[k] ? color : "#fff",
+                    color: personFilter[k] ? (k === "kyle" ? "#333" : "#fff") : C.textSec,
+                    borderColor: personFilter[k] ? "transparent" : C.border,
+                    fontSize: 11,
+                    padding: "4px 12px",
+                  }}>
+                  <span style={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: "50%",
+                    background: personFilter[k] ? (k === "kyle" ? "#333" : "#fff") : color,
+                    display: "inline-block",
+                    marginRight: 4
+                  }} />
+                  {v}
+                </button>
               ))}
             </div>
           </>
@@ -460,7 +532,7 @@ export default function App() {
               </div>
               <div style={{ borderTop: `1px solid ${C.border}`, marginTop: 16, paddingTop: 16, padding: "16px 8px 0" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                  <span style={{ fontSize: 11, fontWeight: 500, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.8px" }}>✈ Free for Flights</span>
+                  <span style={{ fontSize: 11, fontWeight: 500, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.8px", display: "flex", alignItems: "center", gap: 4 }}><PlaneIcon size={12} color={C.textMuted} /> Free for Flights</span>
                   <span style={{ fontSize: 10, color: C.textMuted, background: C.free, border: `1px solid ${C.freeBorder}`, borderRadius: 8, padding: "1px 6px" }}>{freeWeekends.length}</span>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
@@ -471,7 +543,7 @@ export default function App() {
                       border: `1px solid ${fw.monthIdx === month ? C.freeBorder : "transparent"}`,
                       transition: "all 0.15s",
                     }}>
-                      <div style={{ fontSize: 16, width: 20, textAlign: "center" }}>✈</div>
+                      <PlaneIcon size={16} color={C.textMuted} />
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: 12, fontWeight: 500, color: C.text }}>{fw.label}</div>
                         <div style={{ fontSize: 10, color: C.textMuted }}>Weekend free</div>
@@ -546,16 +618,16 @@ export default function App() {
                   const t = cell.current && isToday(cell.day);
                   const isSelected = key && selected === key;
                   const hasEv = events.length > 0;
-                  const isWeekend = i % 7 === 0 || i % 7 === 6;
+                  const isWeekend = i % 7 === 0 || i % 7 === 5 || i % 7 === 6;
                   const isFreeWeekend = cell.current && isWeekend && !hasEv;
                   const isInTodayCol = (i % 7) === todayCol && isMobile;
-                  const cellBg = isSelected ? C.priSoft : isInTodayCol ? C.priTint : hasEv && !isMobile ? C.priTint : isFreeWeekend ? C.free : "#fff";
+                  const cellBg = isSelected ? C.priSoft : isInTodayCol ? C.priTint : hasEv ? C.unavailable : isFreeWeekend ? C.free : "#fff";
                   return (
                     <div key={i} onClick={() => key && events.length && setSelected(isSelected ? null : key)} style={{
                       borderRight: (i + 1) % 7 !== 0 ? `1px solid ${C.border}` : "none",
                       borderBottom: `1px solid ${C.border}`, padding: isMobile ? "1px" : "4px 8px",
                       background: cellBg,
-                      borderLeft: hasEv && !isMobile ? `3px solid ${PERSON_COLORS[events[0]?.person]?.chip || C.pri}` : isFreeWeekend ? `2px solid ${C.freeBorder}` : "none",
+                      borderLeft: hasEv ? `2px solid ${C.unavailableBorder}` : isFreeWeekend ? `2px solid ${C.freeBorder}` : "none",
                       cursor: events.length ? "pointer" : "default", minHeight: isMobile ? "56px" : 0,
                       overflow: "hidden", transition: "background 0.15s", opacity: cell.current ? 1 : 0.35,
                     }}>
@@ -567,8 +639,25 @@ export default function App() {
                           color: t ? "#fff" : cell.current ? C.text : C.textMuted,
                         }}>{cell.day}</span>
                       </div>
+                      {hasEv && (
+                        <div style={{
+                          fontSize: isMobile ? 7 : 8,
+                          fontWeight: 600,
+                          color: "#ef4444",
+                          background: "rgba(239,68,68,0.1)",
+                          border: "1px solid rgba(239,68,68,0.2)",
+                          borderRadius: 2,
+                          padding: isMobile ? "1px 3px" : "1px 4px",
+                          marginBottom: 2,
+                          display: "inline-block",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.3px"
+                        }}>
+                          ✗ Unavailable
+                        </div>
+                      )}
                       {isFreeWeekend && (
-                        <div style={{ fontSize: isMobile ? 7 : 9, fontWeight: 500, color: C.textMuted, background: C.free, border: `1px solid ${C.freeBorder}`, borderRadius: 3, padding: isMobile ? "0px 3px" : "1px 5px", marginBottom: 2, display: "inline-block" }}>✈ free</div>
+                        <div style={{ fontSize: isMobile ? 7 : 9, fontWeight: 500, color: C.textMuted, background: C.free, border: `1px solid ${C.freeBorder}`, borderRadius: 3, padding: isMobile ? "0px 3px" : "1px 5px", marginBottom: 2, display: "inline-flex", alignItems: "center", gap: 2 }}><PlaneIcon size={isMobile ? 7 : 9} color={C.textMuted} /> free</div>
                       )}
                       {events.map((ev, j) => {
                         const pc = PERSON_COLORS[ev.person] || PERSON_COLORS.kyle;
