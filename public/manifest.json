@@ -1,0 +1,17 @@
+{
+  "name": "Kyle and Luka Calendar",
+  "short_name": "K&L Calendar",
+  "description": "Shared calendar for Spring 2026 semester",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4285f4",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
