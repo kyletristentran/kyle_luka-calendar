@@ -1,0 +1,128 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - button [ref=e5] [cursor=pointer]:
+      - img [ref=e6]
+    - generic [ref=e7]: February
+    - button [ref=e9] [cursor=pointer]:
+      - img [ref=e10]:
+        - generic [ref=e12]: "13"
+  - generic [ref=e14]:
+    - button "Jan" [ref=e15] [cursor=pointer]
+    - button "Feb" [ref=e16] [cursor=pointer]
+    - button "Mar" [ref=e17] [cursor=pointer]
+    - button "Apr" [ref=e18] [cursor=pointer]
+    - button "May" [ref=e19] [cursor=pointer]
+    - button "Jun" [ref=e20] [cursor=pointer]
+    - button "Jul" [ref=e21] [cursor=pointer]
+    - button "Aug" [ref=e22] [cursor=pointer]
+    - button "Sep" [ref=e23] [cursor=pointer]
+    - button "Oct" [ref=e24] [cursor=pointer]
+    - button "Nov" [ref=e25] [cursor=pointer]
+    - button "Dec" [ref=e26] [cursor=pointer]
+  - generic [ref=e28]:
+    - generic [ref=e29]:
+      - generic [ref=e30]: S
+      - generic [ref=e31]: M
+      - generic [ref=e32]: T
+      - generic [ref=e33]: W
+      - generic [ref=e34]: T
+      - generic [ref=e35]: F
+      - generic [ref=e36]: S
+    - generic [ref=e37]:
+      - generic [ref=e40]: "1"
+      - generic [ref=e41] [cursor=pointer]:
+        - generic [ref=e43]: "2"
+        - generic [ref=e44]: KT / Dr. Arthur
+        - generic [ref=e45]: Tutoring - Noah
+      - generic [ref=e46] [cursor=pointer]:
+        - generic [ref=e48]: "3"
+        - generic [ref=e49]: "WRIT 340: Submit Student Profile"
+      - generic [ref=e50] [cursor=pointer]:
+        - generic [ref=e52]: "4"
+        - generic [ref=e53]: USC HOLD - TRE
+        - generic [ref=e54]: Tutoring - Kenne
+      - generic [ref=e55] [cursor=pointer]:
+        - generic [ref=e57]: "5"
+        - generic [ref=e58]: KT / Devon - The...
+        - generic [ref=e59]: "WRIT 340: Email Illumin article topics"
+        - generic [ref=e60]: Illumin Oral Pres
+      - generic [ref=e61] [cursor=pointer]:
+        - generic [ref=e63]: "6"
+        - generic [ref=e64]: "RED 469: Mix"
+        - generic [ref=e65]: Tutoring - Erwin
+      - generic [ref=e68]: "7"
+      - generic [ref=e71]: "8"
+      - generic [ref=e72] [cursor=pointer]:
+        - generic [ref=e74]: "9"
+        - generic [ref=e75]: KT / Meina
+      - generic [ref=e76] [cursor=pointer]:
+        - generic [ref=e78]: "10"
+        - generic [ref=e79]: KT / SkinFX
+      - generic [ref=e82]: "11"
+      - generic [ref=e83] [cursor=pointer]:
+        - generic [ref=e85]: "12"
+        - generic [ref=e86]: "WRIT 340: Submit Illumin rough draft"
+      - generic [ref=e87] [cursor=pointer]:
+        - generic [ref=e90]: "13"
+        - generic [ref=e91]: "RED 469: Mix"
+        - generic [ref=e92]: Spring 26 Com
+        - generic [ref=e93]: Observational A
+      - generic [ref=e94] [cursor=pointer]:
+        - generic [ref=e96]: "14"
+        - generic [ref=e97]: Valentine's Day
+      - generic [ref=e100]: "15"
+      - generic [ref=e101] [cursor=pointer]:
+        - generic [ref=e103]: "16"
+        - generic [ref=e104]: Presidents' Day
+        - generic [ref=e105]: TREA E-Board Meeting
+      - generic [ref=e106] [cursor=pointer]:
+        - generic [ref=e108]: "17"
+        - generic [ref=e109]: "WRIT 340: Illumin oral pres"
+      - generic [ref=e110] [cursor=pointer]:
+        - generic [ref=e112]: "18"
+        - generic [ref=e113]: Dining Society D
+        - generic [ref=e114]: Final Draft Illumin
+      - generic [ref=e115] [cursor=pointer]:
+        - generic [ref=e117]: "19"
+        - generic [ref=e118]: KT / Ray
+        - generic [ref=e119]: "WRIT 340: Submit Illumin final draft"
+      - generic [ref=e120] [cursor=pointer]:
+        - generic [ref=e122]: "20"
+        - generic [ref=e123]: "RED 469: Mix"
+      - generic [ref=e126]: "21"
+      - generic [ref=e127] [cursor=pointer]:
+        - generic [ref=e129]: "22"
+        - generic [ref=e130]: Project Angel F
+      - generic [ref=e133]: "23"
+      - generic [ref=e134] [cursor=pointer]:
+        - generic [ref=e136]: "24"
+        - generic [ref=e137]: Resume Review
+      - generic [ref=e138] [cursor=pointer]:
+        - generic [ref=e140]: "25"
+        - generic [ref=e141]: Dining Society D
+      - generic [ref=e142] [cursor=pointer]:
+        - generic [ref=e144]: "26"
+        - generic [ref=e145]: Lever Friends Ha
+      - generic [ref=e146] [cursor=pointer]:
+        - generic [ref=e148]: "27"
+        - generic [ref=e149]: "RED 469: Mix"
+      - generic [ref=e152]: "28"
+      - generic [ref=e155]: "1"
+      - generic [ref=e158]: "2"
+      - generic [ref=e161]: "3"
+      - generic [ref=e164]: "4"
+      - generic [ref=e167]: "5"
+      - generic [ref=e170]: "6"
+      - generic [ref=e173]: "7"
+      - generic [ref=e176]: "8"
+      - generic [ref=e179]: "9"
+      - generic [ref=e182]: "10"
+      - generic [ref=e185]: "11"
+      - generic [ref=e188]: "12"
+      - generic [ref=e191]: "13"
+      - generic [ref=e194]: "14"
+  - button "Create event" [ref=e195] [cursor=pointer]
+```

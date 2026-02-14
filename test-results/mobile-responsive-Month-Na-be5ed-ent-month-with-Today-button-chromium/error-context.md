@@ -1,0 +1,195 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]:
+        - generic [ref=e8]: "13"
+      - generic [ref=e9]: Kyle and Luka Calendar
+    - button "Today" [active] [ref=e10] [cursor=pointer]
+    - generic [ref=e11]:
+      - button "‹" [ref=e12] [cursor=pointer]
+      - button "›" [ref=e13] [cursor=pointer]
+    - generic [ref=e14]: February 2026
+    - generic [ref=e15]: Month
+  - generic [ref=e16]:
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - generic [ref=e20]: February 2026
+          - generic [ref=e21]:
+            - button "‹" [ref=e22] [cursor=pointer]
+            - button "›" [ref=e23] [cursor=pointer]
+        - generic [ref=e24]:
+          - generic [ref=e25]: S
+          - generic [ref=e26]: M
+          - generic [ref=e27]: T
+          - generic [ref=e28]: W
+          - generic [ref=e29]: T
+          - generic [ref=e30]: F
+          - generic [ref=e31]: S
+          - generic [ref=e32]: "1"
+          - generic [ref=e33] [cursor=pointer]: "2"
+          - generic [ref=e35] [cursor=pointer]: "3"
+          - generic [ref=e37] [cursor=pointer]: "4"
+          - generic [ref=e39] [cursor=pointer]: "5"
+          - generic [ref=e41] [cursor=pointer]: "6"
+          - generic [ref=e43]: "7"
+          - generic [ref=e44]: "8"
+          - generic [ref=e45] [cursor=pointer]: "9"
+          - generic [ref=e47] [cursor=pointer]: "10"
+          - generic [ref=e49]: "11"
+          - generic [ref=e50] [cursor=pointer]: "12"
+          - generic [ref=e52] [cursor=pointer]: "13"
+          - generic [ref=e53] [cursor=pointer]: "14"
+          - generic [ref=e55]: "15"
+          - generic [ref=e56] [cursor=pointer]: "16"
+          - generic [ref=e58] [cursor=pointer]: "17"
+          - generic [ref=e60] [cursor=pointer]: "18"
+          - generic [ref=e62] [cursor=pointer]: "19"
+          - generic [ref=e64] [cursor=pointer]: "20"
+          - generic [ref=e66]: "21"
+          - generic [ref=e67] [cursor=pointer]: "22"
+          - generic [ref=e69]: "23"
+          - generic [ref=e70] [cursor=pointer]: "24"
+          - generic [ref=e72] [cursor=pointer]: "25"
+          - generic [ref=e74] [cursor=pointer]: "26"
+          - generic [ref=e76] [cursor=pointer]: "27"
+          - generic [ref=e78]: "28"
+      - generic [ref=e79]:
+        - generic [ref=e80]: People
+        - generic [ref=e83]: Kyle
+        - generic [ref=e86]: Luka
+        - generic [ref=e89]: Kyle & Luka
+      - generic [ref=e90]:
+        - generic [ref=e91]: Status
+        - generic [ref=e92]:
+          - generic [ref=e95]:
+            - text: Confirmed ·
+            - strong [ref=e96]: "29"
+          - generic [ref=e99]:
+            - text: Tentative ·
+            - strong [ref=e100]: "1"
+      - generic [ref=e101]:
+        - generic [ref=e102]: Semester
+        - generic [ref=e103]: Feb – Jul 2026
+        - generic [ref=e104]: 30 events total
+      - generic [ref=e105]:
+        - generic [ref=e108]: ✈ Free weekends
+        - generic [ref=e109]: Available for flights & trips
+    - generic [ref=e110]:
+      - generic [ref=e111]:
+        - generic [ref=e112]: SUN
+        - generic [ref=e113]: MON
+        - generic [ref=e114]: TUE
+        - generic [ref=e115]: WED
+        - generic [ref=e116]: THU
+        - generic [ref=e117]: FRI
+        - generic [ref=e118]: SAT
+      - generic [ref=e119]:
+        - generic [ref=e120]:
+          - generic [ref=e122]: "1"
+          - generic [ref=e123]: ✈ available
+        - generic [ref=e124] [cursor=pointer]:
+          - generic [ref=e126]: "2"
+          - generic [ref=e127]: 12:30pmKT / Dr. Arthur
+          - generic [ref=e128]: 5:00pmTutoring - Noah
+        - generic [ref=e129] [cursor=pointer]:
+          - generic [ref=e131]: "3"
+          - generic [ref=e132]: "11:45pmWRIT 340: Submit Student Profile"
+        - generic [ref=e133] [cursor=pointer]:
+          - generic [ref=e135]: "4"
+          - generic [ref=e136]: 2:00pmUSC HOLD - TRE
+          - generic [ref=e137]: 5:00pmTutoring - Kenne
+        - generic [ref=e138] [cursor=pointer]:
+          - generic [ref=e140]: "5"
+          - generic [ref=e141]: 1:00pmKT / Devon - The...
+          - generic [ref=e142]: "11:45pmWRIT 340: Email Illumin article topics"
+          - generic [ref=e143]: 11:59pmIllumin Oral Pres
+        - generic [ref=e144] [cursor=pointer]:
+          - generic [ref=e146]: "6"
+          - generic [ref=e147]: "9:00amRED 469: Mix"
+          - generic [ref=e148]: 1:00pmTutoring - Erwin
+        - generic [ref=e149]:
+          - generic [ref=e151]: "7"
+          - generic [ref=e152]: ✈ available
+        - generic [ref=e153]:
+          - generic [ref=e155]: "8"
+          - generic [ref=e156]: ✈ available
+        - generic [ref=e157] [cursor=pointer]:
+          - generic [ref=e159]: "9"
+          - generic [ref=e160]: 2:00pmKT / Meina
+        - generic [ref=e161] [cursor=pointer]:
+          - generic [ref=e163]: "10"
+          - generic [ref=e164]: 10:30amKT / SkinFX
+        - generic [ref=e167]: "11"
+        - generic [ref=e168] [cursor=pointer]:
+          - generic [ref=e170]: "12"
+          - generic [ref=e171]: "11:45pmWRIT 340: Submit Illumin rough draft"
+        - generic [ref=e172] [cursor=pointer]:
+          - generic [ref=e174]: "13"
+          - generic [ref=e175]: "9:00amRED 469: Mix"
+          - generic [ref=e176]: 10:00pmSpring 26 Com
+          - generic [ref=e177]: 11:59pmObservational A
+        - generic [ref=e178] [cursor=pointer]:
+          - generic [ref=e180]: "14"
+          - generic [ref=e181]: All dayValentine's Day
+        - generic [ref=e182]:
+          - generic [ref=e184]: "15"
+          - generic [ref=e185]: ✈ available
+        - generic [ref=e186] [cursor=pointer]:
+          - generic [ref=e188]: "16"
+          - generic [ref=e189]: All dayPresidents' Day
+          - generic [ref=e190]: 3:00pmTREA E-Board Meeting
+        - generic [ref=e191] [cursor=pointer]:
+          - generic [ref=e193]: "17"
+          - generic [ref=e194]: "5:00pmWRIT 340: Illumin oral pres"
+        - generic [ref=e195] [cursor=pointer]:
+          - generic [ref=e197]: "18"
+          - generic [ref=e198]: 6:30pmDining Society D
+          - generic [ref=e199]: 11:59pmFinal Draft Illumin
+        - generic [ref=e200] [cursor=pointer]:
+          - generic [ref=e202]: "19"
+          - generic [ref=e203]: 10:30amKT / Ray
+          - generic [ref=e204]: "11:45pmWRIT 340: Submit Illumin final draft"
+        - generic [ref=e205] [cursor=pointer]:
+          - generic [ref=e207]: "20"
+          - generic [ref=e208]: "9:00amRED 469: Mix"
+        - generic [ref=e209]:
+          - generic [ref=e211]: "21"
+          - generic [ref=e212]: ✈ available
+        - generic [ref=e213] [cursor=pointer]:
+          - generic [ref=e215]: "22"
+          - generic [ref=e216]: 12:45pmProject Angel F
+        - generic [ref=e219]: "23"
+        - generic [ref=e220] [cursor=pointer]:
+          - generic [ref=e222]: "24"
+          - generic [ref=e223]: 6:30pmResume Review❓
+        - generic [ref=e224] [cursor=pointer]:
+          - generic [ref=e226]: "25"
+          - generic [ref=e227]: 6:30pmDining Society D
+        - generic [ref=e228] [cursor=pointer]:
+          - generic [ref=e230]: "26"
+          - generic [ref=e231]: 6:00pmLever Friends Ha
+        - generic [ref=e232] [cursor=pointer]:
+          - generic [ref=e234]: "27"
+          - generic [ref=e235]: "9:00amRED 469: Mix"
+        - generic [ref=e236]:
+          - generic [ref=e238]: "28"
+          - generic [ref=e239]: ✈ available
+        - generic [ref=e242]: "1"
+        - generic [ref=e245]: "2"
+        - generic [ref=e248]: "3"
+        - generic [ref=e251]: "4"
+        - generic [ref=e254]: "5"
+        - generic [ref=e257]: "6"
+        - generic [ref=e260]: "7"
+        - generic [ref=e263]: "8"
+        - generic [ref=e266]: "9"
+        - generic [ref=e269]: "10"
+        - generic [ref=e272]: "11"
+        - generic [ref=e275]: "12"
+        - generic [ref=e278]: "13"
+        - generic [ref=e281]: "14"
+```
