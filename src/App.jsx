@@ -150,6 +150,36 @@ export default function App() {
   const confirmed = EVENTS.filter(e => e.status === "confirmed").length;
   const tentative = EVENTS.filter(e => e.status === "tentative").length;
 
+  // Compute free weekends across semester (Feb–Jul 2026)
+  const freeWeekends = useMemo(() => {
+    const results = [];
+    for (let m = 1; m <= 6; m++) { // Feb(1) through Jul(6)
+      const dim = getDaysInMonth(2026, m);
+      for (let d = 1; d <= dim; d++) {
+        const date = new Date(2026, m, d);
+        const dow = date.getDay();
+        if (dow === 6) { // Saturday — check Sat+Sun pair
+          const satKey = fmtKey(2026, m, d);
+          const sunD = d + 1;
+          const sunKey = sunD <= dim ? fmtKey(2026, m, sunD) : null;
+          const satFree = !eventMap[satKey] || eventMap[satKey].length === 0;
+          const sunFree = sunKey ? (!eventMap[sunKey] || eventMap[sunKey].length === 0) : true;
+          if (satFree && sunFree) {
+            const satDate = new Date(2026, m, d);
+            const sunDate = sunD <= dim ? new Date(2026, m, sunD) : null;
+            results.push({
+              sat: satDate,
+              sun: sunDate,
+              label: `${satDate.toLocaleDateString("en-US",{month:"short",day:"numeric"})}${sunDate ? "–"+sunDate.getDate() : ""}`,
+              monthIdx: m,
+            });
+          }
+        }
+      }
+    }
+    return results;
+  }, []);
+
   // Schedule view: sorted list of events for current month
   const scheduleEvents = useMemo(() => {
     const evs = [];
@@ -281,6 +311,29 @@ export default function App() {
               <div style={{ fontWeight: 500 }}>Semester: Feb – Jul 2026</div>
               <div style={{ marginTop: 2 }}>{EVENTS.length} events total</div>
             </div>
+
+            <div className="nav-sep" />
+
+            {/* Free for flights */}
+            <div style={{ padding: "8px 24px 4px", fontSize: 11, fontWeight: 500, color: C.navMuted, textTransform: "uppercase", letterSpacing: 1 }}>
+              ✈ Free for Flights
+              <span style={{ marginLeft: 6, fontSize: 10, background: "rgba(255,255,255,0.1)", borderRadius: 8, padding: "1px 6px" }}>{freeWeekends.length}</span>
+            </div>
+            <div style={{ padding: "4px 16px 16px", display: "flex", flexDirection: "column", gap: 2 }}>
+              {freeWeekends.map((fw, i) => (
+                <div key={i} onClick={() => { setMonth(fw.monthIdx); setNavOpen(false); }} style={{
+                  display: "flex", alignItems: "center", gap: 10, padding: "8px 8px", borderRadius: 8, cursor: "pointer",
+                  background: fw.monthIdx === month ? "rgba(255,255,255,0.08)" : "transparent",
+                  transition: "background 0.15s",
+                }}>
+                  <span style={{ fontSize: 14 }}>✈</span>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 500, color: C.navText }}>{fw.label}</div>
+                    <div style={{ fontSize: 10, color: C.navMuted }}>Weekend free</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </>}
 
@@ -406,9 +459,25 @@ export default function App() {
                 <div style={{ fontSize: 12, color: C.textSec, marginTop: 2 }}>{EVENTS.length} events total</div>
               </div>
               <div style={{ borderTop: `1px solid ${C.border}`, marginTop: 16, paddingTop: 16, padding: "16px 8px 0" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <div style={{ width: 12, height: 12, borderRadius: 2, background: C.free, border: `1px solid ${C.freeBorder}`, flexShrink: 0 }} />
-                  <span style={{ fontSize: 12, color: C.textSec, fontWeight: 450 }}>✈ Free weekends</span>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                  <span style={{ fontSize: 11, fontWeight: 500, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.8px" }}>✈ Free for Flights</span>
+                  <span style={{ fontSize: 10, color: C.textMuted, background: C.free, border: `1px solid ${C.freeBorder}`, borderRadius: 8, padding: "1px 6px" }}>{freeWeekends.length}</span>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                  {freeWeekends.map((fw, i) => (
+                    <div key={i} onClick={() => { setMonth(fw.monthIdx); }} style={{
+                      display: "flex", alignItems: "center", gap: 8, padding: "5px 6px", borderRadius: 6, cursor: "pointer",
+                      background: fw.monthIdx === month ? C.free : "transparent",
+                      border: `1px solid ${fw.monthIdx === month ? C.freeBorder : "transparent"}`,
+                      transition: "all 0.15s",
+                    }}>
+                      <div style={{ fontSize: 16, width: 20, textAlign: "center" }}>✈</div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 12, fontWeight: 500, color: C.text }}>{fw.label}</div>
+                        <div style={{ fontSize: 10, color: C.textMuted }}>Weekend free</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
