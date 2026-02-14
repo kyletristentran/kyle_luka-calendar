@@ -1,255 +1,265 @@
 import { useState, useMemo } from "react";
 
 const EVENTS = [
-  { date: "2026-02-08", title: "Tiki Disco Winter", venue: "Knockdown Center, BK", status: "confirmed", time: "22:00", endTime: "04:00", color: "#7A1B2D" },
-  { date: "2026-02-12", title: "RawCuts", venue: "Secret Location, BK", status: "confirmed", time: "23:00", endTime: "04:00", color: "#7A1B2D" },
-  { date: "2026-02-20", title: "Bedouin", venue: "Capitale, NY", status: "tentative", time: "22:00", endTime: "04:00", color: "#B8860B" },
-  { date: "2026-02-21", title: "Cassian", venue: "Navy Yard, BK", status: "confirmed", time: "22:00", endTime: "04:00", color: "#7A1B2D" },
-  { date: "2026-03-01", title: "Tiki Disco Winter", venue: "Knockdown Center, BK", status: "confirmed", time: "22:00", endTime: "04:00", color: "#7A1B2D" },
-  { date: "2026-03-20", title: "Prospa b2b Josh Baker", venue: "Navy Yard, BK", status: "tentative", time: "22:00", endTime: "04:00", color: "#B8860B" },
-  { date: "2026-03-21", title: "Carl Cox", venue: "Navy Yard, BK", status: "tentative", time: "22:00", endTime: "05:00", color: "#B8860B" },
-  { date: "2026-04-03", title: "SIDEPIECE", venue: "Navy Yard, BK", status: "tentative", time: "22:00", endTime: "04:00", color: "#B8860B" },
-  { date: "2026-04-20", title: "Hot Since 82", venue: "House of Yes, BK", status: "tentative", time: "22:00", endTime: "04:00", color: "#B8860B" },
-  { date: "2026-04-25", title: "CID", venue: "99 Scott, BK", status: "confirmed", time: "22:00", endTime: "04:00", color: "#7A1B2D" },
-  { date: "2026-05-23", title: "Solomun", venue: "Fulton Fish Market, QE", status: "confirmed", time: "14:00", endTime: "23:00", color: "#7A1B2D" },
-  { date: "2026-06-20", title: "Beltran", venue: "Navy Yard, BK", status: "tentative", time: "22:00", endTime: "04:00", color: "#B8860B" },
-  { date: "2026-07-25", title: "Klangkeuntsler", venue: "Monegros Desert Festival, Fraga, SP", status: "confirmed", time: "16:00", endTime: "06:00", color: "#4A0E1B" },
+  { date: "2026-02-08", title: "Tiki Disco Winter", venue: "Knockdown Center, BK", status: "confirmed", color: "#0b8043", time: "10pm" },
+  { date: "2026-02-12", title: "RawCuts", venue: "Secret Location, BK", status: "confirmed", color: "#8e24aa", time: "11pm" },
+  { date: "2026-02-20", title: "Bedouin", venue: "Capitale, NY", status: "tentative", color: "#f4511e", time: "10pm" },
+  { date: "2026-02-21", title: "Cassian", venue: "Navy Yard, BK", status: "confirmed", color: "#039be5", time: "10pm" },
+  { date: "2026-03-01", title: "Tiki Disco Winter", venue: "Knockdown Center, BK", status: "confirmed", color: "#0b8043", time: "10pm" },
+  { date: "2026-03-20", title: "Prospa b2b Josh Baker", venue: "Navy Yard, BK", status: "tentative", color: "#f4511e", time: "10pm" },
+  { date: "2026-03-21", title: "Carl Cox", venue: "Navy Yard, BK", status: "tentative", color: "#f4511e", time: "11pm" },
+  { date: "2026-04-03", title: "SIDEPIECE", venue: "Navy Yard, BK", status: "tentative", color: "#f4511e", time: "10pm" },
+  { date: "2026-04-20", title: "Hot Since 82", venue: "House of Yes, BK", status: "tentative", color: "#f4511e", time: "11pm" },
+  { date: "2026-04-25", title: "CID", venue: "99 Scott, BK", status: "confirmed", color: "#039be5", time: "11pm" },
+  { date: "2026-05-23", title: "Solomun", venue: "Fulton Fish Market, QE", status: "confirmed", color: "#8e24aa", time: "6pm" },
+  { date: "2026-06-20", title: "Beltran", venue: "Navy Yard, BK", status: "tentative", color: "#f4511e", time: "10pm" },
+  { date: "2026-07-25", title: "Klangkeuntsler", venue: "Monegros Desert Fest, SP", status: "confirmed", color: "#0b8043", time: "All day" },
 ];
 
 const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-const DAY_ABBR = ["S","M","T","W","T","F","S"];
+const DAY_HEADERS = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
+const MINI_DAYS = ["S","M","T","W","T","F","S"];
 
 function getDaysInMonth(y, m) { return new Date(y, m + 1, 0).getDate(); }
-function getFirstDayOfWeek(y, m) { return new Date(y, m, 1).getDay(); }
+function getFirstDay(y, m) { return new Date(y, m, 1).getDay(); }
 function fmtKey(y, m, d) { return `${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`; }
-function getDayName(dateStr) {
-  return new Date(dateStr + "T12:00:00").toLocaleDateString("en-US", { weekday: "long" }).toUpperCase();
-}
-function getDayNum(dateStr) { return new Date(dateStr + "T12:00:00").getDate(); }
-function getMonthShort(dateStr) { return new Date(dateStr + "T12:00:00").toLocaleDateString("en-US", { month: "short" }); }
 
 const eventMap = {};
-EVENTS.forEach(e => { if (!eventMap[e.date]) eventMap[e.date] = []; eventMap[e.date].push(e); });
+EVENTS.forEach(e => {
+  if (!eventMap[e.date]) eventMap[e.date] = [];
+  eventMap[e.date].push(e);
+});
 
 export default function App() {
   const [year, setYear] = useState(2026);
-  const [month, setMonth] = useState(1);
-  const [selectedDate, setSelectedDate] = useState("2026-02-08");
+  const [month, setMonth] = useState(1); // Feb
+  const [selected, setSelected] = useState(null);
+  const [hovered, setHovered] = useState(null);
 
   const daysInMonth = getDaysInMonth(year, month);
-  const firstDay = getFirstDayOfWeek(year, month);
+  const firstDay = getFirstDay(year, month);
   const prevMonthDays = getDaysInMonth(year, month === 0 ? 11 : month - 1);
 
-  const prev = () => { if (month === 0) { setMonth(11); setYear(y=>y-1); } else setMonth(m=>m-1); };
-  const next = () => { if (month === 11) { setMonth(0); setYear(y=>y+1); } else setMonth(m=>m+1); };
+  const prev = () => { if (month === 0) { setMonth(11); setYear(y=>y-1); } else setMonth(m=>m-1); setSelected(null); };
+  const next = () => { if (month === 11) { setMonth(0); setYear(y=>y+1); } else setMonth(m=>m+1); setSelected(null); };
 
-  const calendarCells = useMemo(() => {
-    const cells = [];
-    for (let i = 0; i < firstDay; i++) cells.push({ day: prevMonthDays - firstDay + 1 + i, outside: true });
-    for (let d = 1; d <= daysInMonth; d++) cells.push({ day: d, outside: false });
-    const remaining = 42 - cells.length;
-    for (let i = 1; i <= remaining; i++) cells.push({ day: i, outside: true });
-    return cells;
+  const today = new Date();
+  const isToday = (d) => today.getFullYear() === year && today.getMonth() === month && today.getDate() === d;
+
+  // Build 6-row grid (42 cells)
+  const cells = useMemo(() => {
+    const c = [];
+    for (let i = 0; i < firstDay; i++) c.push({ day: prevMonthDays - firstDay + 1 + i, current: false });
+    for (let d = 1; d <= daysInMonth; d++) c.push({ day: d, current: true });
+    const rem = 42 - c.length;
+    for (let i = 1; i <= rem; i++) c.push({ day: i, current: false });
+    return c;
   }, [firstDay, daysInMonth, prevMonthDays]);
 
-  const selectedEvents = eventMap[selectedDate] || [];
+  // Mini calendar for sidebar
+  const miniCells = useMemo(() => {
+    const c = [];
+    for (let i = 0; i < firstDay; i++) c.push(null);
+    for (let d = 1; d <= daysInMonth; d++) c.push(d);
+    return c;
+  }, [firstDay, daysInMonth]);
 
-  // Get upcoming events from selected date forward
-  const upcomingEvents = useMemo(() => {
-    return EVENTS.filter(e => e.date >= selectedDate).slice(0, 5);
-  }, [selectedDate]);
-
-  // Group events by date for timeline
-  const groupedUpcoming = useMemo(() => {
-    const groups = {};
-    upcomingEvents.forEach(e => {
-      if (!groups[e.date]) groups[e.date] = [];
-      groups[e.date].push(e);
-    });
-    return Object.entries(groups);
-  }, [upcomingEvents]);
-
-  // Count confirmed & tentative for this month
-  const monthEvents = EVENTS.filter(e => {
-    const d = new Date(e.date);
-    return d.getFullYear() === year && d.getMonth() === month;
-  });
-  const confirmedCount = monthEvents.filter(e => e.status === "confirmed").length;
-  const tentativeCount = monthEvents.filter(e => e.status === "tentative").length;
-
-  const maroon = "#7A1B2D";
-  const maroonLight = "rgba(122,27,45,0.08)";
-  const maroonMid = "rgba(122,27,45,0.15)";
+  const hasEvent = (d) => !!eventMap[fmtKey(year, month, d)];
 
   return (
-    <div style={{ minHeight: "100vh", background: "#ECEEF1", fontFamily: "'Times New Roman', 'Georgia', serif", display: "flex", justifyContent: "center", padding: "20px 12px" }}>
-      <div style={{ width: "100%", maxWidth: 420, display: "flex", flexDirection: "column", gap: 0 }}>
+    <div style={{ height: "100vh", display: "flex", flexDirection: "column", fontFamily: "'Google Sans', 'Segoe UI', Roboto, sans-serif", background: "#fff", color: "#3c4043", overflow: "hidden" }}>
+      <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
 
-        {/* ─── TOP: CALENDAR CARD ─── */}
-        <div style={{ background: "#F7F7F9", borderRadius: "28px 28px 0 0", padding: "28px 24px 20px", position: "relative" }}>
+      {/* ─── TOP BAR ─── */}
+      <div style={{ display: "flex", alignItems: "center", padding: "8px 16px", borderBottom: "1px solid #dadce0", flexShrink: 0, gap: 16, height: 64 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <svg width="36" height="36" viewBox="0 0 36 36" style={{ flexShrink: 0 }}>
+            <rect width="36" height="36" rx="4" fill="#4285f4"/>
+            <text x="18" y="25" textAnchor="middle" fill="#fff" fontSize="18" fontWeight="700" fontFamily="Google Sans, sans-serif">{today.getDate()}</text>
+          </svg>
+          <span style={{ fontSize: 22, fontWeight: 400, color: "#3c4043", letterSpacing: "-0.2px" }}>Calendar</span>
+        </div>
 
-          {/* Avatar + Header */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
-            <div style={{ width: 40, height: 40, borderRadius: "50%", background: `linear-gradient(135deg, ${maroon}, #4A0E1B)`, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 16, fontWeight: "bold", letterSpacing: 1 }}>KL</div>
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <button onClick={prev} style={{ background: "none", border: "none", fontSize: 18, color: "#888", cursor: "pointer", padding: "4px 8px" }}>‹</button>
-              <button onClick={next} style={{ background: "none", border: "none", fontSize: 18, color: "#888", cursor: "pointer", padding: "4px 8px" }}>›</button>
-              <div style={{ width: 1, height: 20, background: "#ddd", margin: "0 4px" }} />
-              <button style={{ background: "none", border: "none", fontSize: 16, color: "#888", cursor: "pointer" }}>⟲</button>
-              <button style={{ background: "none", border: `1.5px solid ${maroon}`, borderRadius: "50%", width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center", color: maroon, fontSize: 18, cursor: "pointer", lineHeight: 1 }}>+</button>
+        <button onClick={() => { setYear(today.getFullYear()); setMonth(today.getMonth()); }} style={{
+          border: "1px solid #dadce0", borderRadius: 4, padding: "6px 20px", background: "#fff",
+          fontSize: 14, fontWeight: 500, color: "#3c4043", cursor: "pointer", marginLeft: 16,
+        }}>Today</button>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+          <button onClick={prev} style={{ background: "none", border: "none", cursor: "pointer", padding: 8, borderRadius: "50%", display: "flex", alignItems: "center", color: "#5f6368", fontSize: 20 }}>‹</button>
+          <button onClick={next} style={{ background: "none", border: "none", cursor: "pointer", padding: 8, borderRadius: "50%", display: "flex", alignItems: "center", color: "#5f6368", fontSize: 20 }}>›</button>
+        </div>
+
+        <span style={{ fontSize: 22, fontWeight: 400, color: "#3c4043" }}>{MONTH_NAMES[month]} {year}</span>
+
+        <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: 14, color: "#5f6368", border: "1px solid #dadce0", borderRadius: 4, padding: "6px 16px" }}>Month</span>
+        </div>
+      </div>
+
+      {/* ─── BODY ─── */}
+      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+
+        {/* ─── SIDEBAR ─── */}
+        <div style={{ width: 256, borderRight: "1px solid #dadce0", padding: "16px 12px", overflowY: "auto", flexShrink: 0 }}>
+
+          {/* Mini Calendar */}
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 8px", marginBottom: 8 }}>
+              <span style={{ fontSize: 14, fontWeight: 500, color: "#3c4043" }}>{MONTH_NAMES[month]} {year}</span>
+              <div style={{ display: "flex", gap: 2 }}>
+                <button onClick={prev} style={{ background: "none", border: "none", cursor: "pointer", color: "#5f6368", fontSize: 16, padding: 4, borderRadius: "50%" }}>‹</button>
+                <button onClick={next} style={{ background: "none", border: "none", cursor: "pointer", color: "#5f6368", fontSize: 16, padding: 4, borderRadius: "50%" }}>›</button>
+              </div>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 0, textAlign: "center" }}>
+              {MINI_DAYS.map((d, i) => <div key={i} style={{ fontSize: 10, color: "#70757a", padding: "4px 0", fontWeight: 500 }}>{d}</div>)}
+              {miniCells.map((d, i) => {
+                const t = d && isToday(d);
+                const ev = d && hasEvent(d);
+                return (
+                  <div key={i} onClick={() => d && hasEvent(d) && setSelected(fmtKey(year, month, d))} style={{
+                    fontSize: 11, padding: "3px 0", cursor: ev ? "pointer" : "default",
+                    borderRadius: "50%", width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto",
+                    background: t ? "#1a73e8" : "transparent", color: t ? "#fff" : ev ? "#1a73e8" : "#3c4043",
+                    fontWeight: t || ev ? 600 : 400,
+                  }}>{d || ""}</div>
+                );
+              })}
             </div>
           </div>
 
-          {/* Month Title */}
-          <h1 style={{ fontSize: 30, fontWeight: "normal", fontStyle: "italic", color: "#1a1a1a", margin: "0 0 20px 0", letterSpacing: "-0.5px" }}>
-            {MONTH_NAMES[month]} <span style={{ fontStyle: "normal", fontSize: 16, color: "#aaa", fontWeight: "normal" }}>{year}</span>
-          </h1>
-
-          {/* Day Headers */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 0, marginBottom: 6 }}>
-            {DAY_ABBR.map((d, i) => (
-              <div key={i} style={{ textAlign: "center", fontSize: 12, color: "#999", padding: "4px 0", fontStyle: "italic" }}>{d}</div>
+          {/* Legend */}
+          <div style={{ borderTop: "1px solid #dadce0", paddingTop: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 500, color: "#70757a", textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: 12, padding: "0 8px" }}>My Calendars</div>
+            {[
+              { label: "Confirmed", color: "#0b8043" },
+              { label: "Tentative", color: "#f4511e" },
+              { label: "Special", color: "#039be5" },
+              { label: "Festival", color: "#8e24aa" },
+            ].map(c => (
+              <div key={c.label} style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 8px", borderRadius: 4, cursor: "pointer" }}>
+                <div style={{ width: 12, height: 12, borderRadius: 2, background: c.color, flexShrink: 0 }} />
+                <span style={{ fontSize: 13, color: "#3c4043" }}>{c.label}</span>
+              </div>
             ))}
           </div>
 
-          {/* Calendar Grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 2 }}>
-            {calendarCells.map((cell, i) => {
-              const dateKey = cell.outside ? null : fmtKey(year, month, cell.day);
-              const hasEvent = dateKey && eventMap[dateKey];
-              const isSelected = dateKey === selectedDate;
-              const evts = dateKey ? (eventMap[dateKey] || []) : [];
-              const hasConfirmed = evts.some(e => e.status === "confirmed");
-              const hasTentative = evts.some(e => e.status === "tentative");
+          {/* Event count */}
+          <div style={{ borderTop: "1px solid #dadce0", marginTop: 16, paddingTop: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 500, color: "#70757a", textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: 8, padding: "0 8px" }}>Semester Overview</div>
+            <div style={{ padding: "0 8px", fontSize: 13, color: "#3c4043" }}>
+              <div style={{ marginBottom: 4 }}><strong>{EVENTS.filter(e=>e.status==="confirmed").length}</strong> confirmed</div>
+              <div><strong>{EVENTS.filter(e=>e.status==="tentative").length}</strong> tentative</div>
+            </div>
+          </div>
+        </div>
 
+        {/* ─── MAIN CALENDAR GRID ─── */}
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+
+          {/* Day headers */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", borderBottom: "1px solid #dadce0", flexShrink: 0 }}>
+            {DAY_HEADERS.map(d => (
+              <div key={d} style={{ textAlign: "center", fontSize: 11, fontWeight: 500, color: "#70757a", padding: "8px 0", letterSpacing: "0.8px" }}>{d}</div>
+            ))}
+          </div>
+
+          {/* Grid */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gridTemplateRows: "repeat(6, 1fr)", flex: 1 }}>
+            {cells.map((cell, i) => {
+              const key = cell.current ? fmtKey(year, month, cell.day) : null;
+              const events = key ? (eventMap[key] || []) : [];
+              const t = cell.current && isToday(cell.day);
+              const isSelected = key && selected === key;
               return (
-                <div key={i}
-                  onClick={() => { if (!cell.outside) setSelectedDate(fmtKey(year, month, cell.day)); }}
-                  style={{
-                    textAlign: "center", padding: "10px 0", cursor: cell.outside ? "default" : "pointer",
-                    position: "relative", borderRadius: 12, transition: "all 0.2s",
-                    background: isSelected ? maroon : hasEvent ? maroonLight : "transparent",
-                    color: isSelected ? "#fff" : cell.outside ? "#ccc" : hasEvent ? maroon : "#555",
-                  }}>
-                  <span style={{ fontSize: 15, fontWeight: isSelected || hasEvent ? "bold" : "normal" }}>{cell.day}</span>
-                  {hasEvent && !isSelected && (
-                    <div style={{ display: "flex", gap: 3, justifyContent: "center", marginTop: 3 }}>
-                      {hasConfirmed && <div style={{ width: 5, height: 5, borderRadius: "50%", background: maroon }} />}
-                      {hasTentative && <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#B8860B" }} />}
+                <div key={i} onClick={() => key && events.length && setSelected(isSelected ? null : key)} style={{
+                  borderRight: (i + 1) % 7 !== 0 ? "1px solid #dadce0" : "none",
+                  borderBottom: "1px solid #dadce0",
+                  padding: "4px 8px",
+                  background: isSelected ? "#e8f0fe" : "#fff",
+                  cursor: events.length ? "pointer" : "default",
+                  minHeight: 0, overflow: "hidden",
+                  transition: "background 0.15s",
+                  opacity: cell.current ? 1 : 0.35,
+                }}>
+                  {/* Day number */}
+                  <div style={{ marginBottom: 2 }}>
+                    <span style={{
+                      fontSize: 12, fontWeight: 500,
+                      display: "inline-flex", alignItems: "center", justifyContent: "center",
+                      width: t ? 26 : "auto", height: t ? 26 : "auto",
+                      borderRadius: "50%", background: t ? "#1a73e8" : "transparent",
+                      color: t ? "#fff" : cell.current ? "#3c4043" : "#70757a",
+                    }}>{cell.day}</span>
+                  </div>
+
+                  {/* Events */}
+                  {events.map((ev, j) => (
+                    <div key={j}
+                      onMouseEnter={() => setHovered(`${key}-${j}`)}
+                      onMouseLeave={() => setHovered(null)}
+                      style={{
+                        fontSize: 11, fontWeight: 500, color: "#fff",
+                        background: ev.color,
+                        borderRadius: 4, padding: "2px 6px", marginBottom: 2,
+                        whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                        opacity: hovered === `${key}-${j}` ? 0.85 : 1,
+                        transition: "opacity 0.15s",
+                        position: "relative",
+                      }}>
+                      <span style={{ marginRight: 4, fontSize: 10 }}>{ev.time}</span>
+                      {ev.title}
+                      {ev.status === "tentative" && <span style={{ marginLeft: 4, fontSize: 10 }}>❓</span>}
                     </div>
-                  )}
-                  {isSelected && hasEvent && (
-                    <div style={{ display: "flex", gap: 3, justifyContent: "center", marginTop: 3 }}>
-                      <div style={{ width: 5, height: 5, borderRadius: "50%", background: "rgba(255,255,255,0.7)" }} />
-                    </div>
-                  )}
+                  ))}
                 </div>
               );
             })}
           </div>
         </div>
+      </div>
 
-        {/* ─── Drag Handle ─── */}
-        <div style={{ background: "#fff", display: "flex", justifyContent: "center", padding: "10px 0 6px" }}>
-          <div style={{ width: 36, height: 4, borderRadius: 2, background: "#d0d0d0" }} />
-        </div>
-
-        {/* ─── BOTTOM: EVENTS PANEL ─── */}
-        <div style={{ background: "#fff", borderRadius: "0 0 28px 28px", padding: "8px 24px 32px", flex: 1, minHeight: 320 }}>
-
-          {/* Summary line */}
-          {monthEvents.length > 0 && (
-            <div style={{ fontSize: 13, color: "#999", marginBottom: 16, fontStyle: "italic" }}>
-              {confirmedCount > 0 && <><span style={{ color: maroon, fontWeight: "bold" }}>{confirmedCount} confirmed</span></>}
-              {confirmedCount > 0 && tentativeCount > 0 && " · "}
-              {tentativeCount > 0 && <><span style={{ color: "#B8860B" }}>{tentativeCount} tentative</span></>}
-              {monthEvents.length > 0 && " this month"}
-            </div>
-          )}
-
-          {/* Timeline Events */}
-          {groupedUpcoming.map(([date, events], gi) => (
-            <div key={date} style={{ marginBottom: 20 }}>
-              {/* Day Header */}
-              <div style={{ fontSize: 11, fontWeight: "bold", letterSpacing: "0.12em", color: "#aaa", textTransform: "uppercase", marginBottom: 10 }}>
-                {getDayName(date)} {getDayNum(date)}
-              </div>
-
-              {events.map((event, ei) => (
-                <div key={ei} style={{ display: "flex", gap: 14, marginBottom: 14, alignItems: "stretch" }}>
-                  {/* Time column */}
-                  <div style={{ width: 48, flexShrink: 0, textAlign: "right", paddingTop: 2 }}>
-                    <div style={{ fontSize: 13, color: "#888" }}>{event.time}</div>
-                    <div style={{ fontSize: 11, color: "#bbb" }}>{event.endTime}</div>
-                  </div>
-
-                  {/* Color bar */}
-                  <div style={{ width: 3, borderRadius: 2, background: event.status === "confirmed" ? maroon : "#B8860B", flexShrink: 0 }} />
-
-                  {/* Event details */}
-                  <div style={{ flex: 1, paddingTop: 1 }}>
-                    <div style={{ fontSize: 15, fontWeight: "bold", color: "#1a1a1a", marginBottom: 2 }}>{event.title}</div>
-                    <div style={{ fontSize: 12, color: "#999" }}>{event.venue}</div>
-                    {event.status === "tentative" && (
-                      <span style={{ display: "inline-block", marginTop: 4, fontSize: 10, fontStyle: "italic", color: "#B8860B", background: "rgba(184,134,11,0.08)", padding: "2px 8px", borderRadius: 4, letterSpacing: "0.05em" }}>Tentative</span>
-                    )}
-                  </div>
-
-                  {/* Status dot */}
-                  <div style={{ display: "flex", alignItems: "flex-start", paddingTop: 6 }}>
-                    <div style={{ width: 7, height: 7, borderRadius: "50%", background: event.status === "confirmed" ? maroon : "#B8860B" }} />
+      {/* ─── EVENT DETAIL POPUP ─── */}
+      {selected && eventMap[selected] && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          background: "rgba(0,0,0,0.3)", zIndex: 100,
+        }} onClick={() => setSelected(null)}>
+          <div onClick={e => e.stopPropagation()} style={{
+            background: "#fff", borderRadius: 12, padding: "24px 28px", minWidth: 360,
+            boxShadow: "0 24px 48px rgba(0,0,0,0.16)", maxWidth: 440,
+          }}>
+            {eventMap[selected].map((ev, i) => (
+              <div key={i} style={{ marginBottom: i < eventMap[selected].length - 1 ? 16 : 0 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
+                  <div style={{ width: 14, height: 14, borderRadius: 3, background: ev.color, flexShrink: 0 }} />
+                  <div style={{ fontSize: 20, fontWeight: 400, color: "#3c4043" }}>{ev.title}</div>
+                </div>
+                <div style={{ fontSize: 14, color: "#5f6368", marginLeft: 26, lineHeight: 1.6 }}>
+                  <div>{new Date(ev.date + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}</div>
+                  <div>{ev.time} · {ev.venue}</div>
+                  <div style={{ marginTop: 6 }}>
+                    <span style={{
+                      display: "inline-block", fontSize: 11, fontWeight: 500, letterSpacing: "0.5px", textTransform: "uppercase",
+                      padding: "3px 10px", borderRadius: 12,
+                      background: ev.status === "confirmed" ? "#e6f4ea" : "#fce8e6",
+                      color: ev.status === "confirmed" ? "#137333" : "#c5221f",
+                    }}>{ev.status}</span>
                   </div>
                 </div>
-              ))}
+              </div>
+            ))}
+            <div style={{ textAlign: "right", marginTop: 16 }}>
+              <button onClick={() => setSelected(null)} style={{
+                background: "none", border: "none", color: "#1a73e8", fontSize: 14,
+                fontWeight: 500, cursor: "pointer", padding: "6px 12px", borderRadius: 4,
+              }}>Close</button>
             </div>
-          ))}
-
-          {groupedUpcoming.length === 0 && (
-            <div style={{ textAlign: "center", padding: "40px 0", color: "#ccc", fontStyle: "italic", fontSize: 14 }}>
-              No upcoming events from this date
-            </div>
-          )}
+          </div>
         </div>
-
-        {/* ─── BOTTOM NAV ─── */}
-        <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", padding: "14px 20px", marginTop: 8 }}>
-          {[
-            { icon: "⊞", label: "Grid" },
-            { icon: "☐", label: "Tasks" },
-            { icon: "☷", active: true, label: "Calendar" },
-            { icon: "⚬", label: "Alerts" },
-            { icon: "☐", label: "Chat" },
-          ].map((item, i) => (
-            <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, cursor: "pointer" }}>
-              <span style={{ fontSize: 18, color: item.active ? maroon : "#bbb", transition: "color 0.2s" }}>{item.icon}</span>
-              <span style={{ fontSize: 9, color: item.active ? maroon : "#ccc", letterSpacing: "0.05em" }}>{item.label}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* ─── Quick Month Jump ─── */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, justifyContent: "center", marginTop: 8, paddingBottom: 12 }}>
-          {MONTH_NAMES.map((m, idx) => {
-            const hasEv = EVENTS.some(e => { const d = new Date(e.date); return d.getFullYear() === 2026 && d.getMonth() === idx; });
-            const isCurrent = month === idx && year === 2026;
-            return (
-              <button key={m} onClick={() => { setYear(2026); setMonth(idx); }}
-                style={{
-                  background: isCurrent ? maroon : hasEv ? maroonLight : "transparent",
-                  border: hasEv ? `1px solid ${maroon}33` : "1px solid #e0e0e0",
-                  borderRadius: 8, padding: "5px 10px", cursor: "pointer",
-                  fontSize: 11, fontFamily: "'Times New Roman', serif",
-                  color: isCurrent ? "#fff" : hasEv ? maroon : "#bbb",
-                  fontWeight: isCurrent ? "bold" : "normal",
-                  transition: "all 0.2s",
-                }}>
-                {m.slice(0, 3)}
-              </button>
-            );
-          })}
-        </div>
-
-      </div>
+      )}
     </div>
   );
 }
