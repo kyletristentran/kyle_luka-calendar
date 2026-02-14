@@ -32,8 +32,10 @@ const EVENTS = [
   { date: "2026-02-05", title: "Illumin Oral Pres", venue: "USC", status: "confirmed", time: "11:59pm", person: "kyle" },
   { date: "2026-02-06", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am", person: "kyle" },
   { date: "2026-02-06", title: "Tutoring - Erwin", venue: "USC", status: "confirmed", time: "1:00pm", person: "kyle" },
+  { date: "2026-02-08", title: "Tiki Disco Winter", venue: "Knockdown Center, BK", status: "confirmed", time: "10:00pm", person: "kyle" },
   { date: "2026-02-09", title: "KT / Meina", venue: "USC", status: "confirmed", time: "2:00pm", person: "kyle" },
   { date: "2026-02-10", title: "KT / SkinFX", venue: "USC", status: "confirmed", time: "10:30am", person: "kyle" },
+  { date: "2026-02-12", title: "RawCuts", venue: "Secret Location, BK", status: "confirmed", time: "10:00pm", person: "kyle" },
   { date: "2026-02-12", title: "WRIT 340: Submit Illumin Rough Draft", venue: "USC", status: "confirmed", time: "11:45pm", person: "kyle" },
   { date: "2026-02-13", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am", person: "kyle" },
   { date: "2026-02-13", title: "Spring 26 Commencement", venue: "USC", status: "confirmed", time: "10:00pm", person: "both" },
@@ -46,12 +48,23 @@ const EVENTS = [
   { date: "2026-02-18", title: "Final Draft Illumin", venue: "USC", status: "confirmed", time: "11:59pm", person: "kyle" },
   { date: "2026-02-19", title: "KT / Ray", venue: "USC", status: "confirmed", time: "10:30am", person: "kyle" },
   { date: "2026-02-19", title: "WRIT 340: Submit Illumin Final Draft", venue: "USC", status: "confirmed", time: "11:45pm", person: "kyle" },
+  { date: "2026-02-20", title: "Bedouin", venue: "Capitale, NY", status: "tentative", time: "10:00pm", person: "both" },
   { date: "2026-02-20", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am", person: "kyle" },
+  { date: "2026-02-21", title: "Cassion", venue: "Navy Yard, BK", status: "confirmed", time: "10:00pm", person: "luka" },
   { date: "2026-02-22", title: "Project Angel Food", venue: "USC", status: "confirmed", time: "12:45pm", person: "both" },
   { date: "2026-02-24", title: "Resume Review", venue: "USC", status: "tentative", time: "6:30pm", person: "kyle" },
   { date: "2026-02-25", title: "Dining Society Dinner", venue: "USC", status: "confirmed", time: "6:30pm", person: "both" },
   { date: "2026-02-26", title: "Lever Friends Hangout", venue: "USC", status: "confirmed", time: "6:00pm", person: "both" },
   { date: "2026-02-27", title: "RED 469: Mix", venue: "USC", status: "confirmed", time: "9:00am", person: "kyle" },
+  { date: "2026-03-01", title: "Tiki Disco Winter", venue: "Knockdown Center, BK", status: "confirmed", time: "10:00pm", person: "kyle" },
+  { date: "2026-03-20", title: "Prospa b2b Josh Baker", venue: "Navy Yard, BK", status: "tentative", time: "10:00pm", person: "both" },
+  { date: "2026-03-21", title: "Carl Cox", venue: "Navy Yard, BK", status: "tentative", time: "10:00pm", person: "both" },
+  { date: "2026-04-03", title: "SiDEPiECE", venue: "Navy Yard, BK", status: "tentative", time: "10:00pm", person: "both" },
+  { date: "2026-04-20", title: "Hot Since 82", venue: "House of Yes, BK", status: "confirmed", time: "10:00pm", person: "both" },
+  { date: "2026-04-25", title: "CID", venue: "99 Scott, BK", status: "confirmed", time: "10:00pm", person: "kyle" },
+  { date: "2026-05-23", title: "Solomun", venue: "Fulton Fish Market, QE", status: "confirmed", time: "10:00pm", person: "luka" },
+  { date: "2026-06-20", title: "Beltran", venue: "Navy Yard, BK", status: "tentative", time: "10:00pm", person: "both" },
+  { date: "2026-07-25", title: "Klangkunsler", venue: "Monegros Desert Festival, Frogo, SP", status: "confirmed", time: "All day", person: "both" },
 ];
 
 const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -112,9 +125,14 @@ export default function App() {
     const c = [];
     for (let i = 0; i < firstDay; i++) c.push({ day: prevMonthDays - firstDay + 1 + i, current: false });
     for (let d = 1; d <= daysInMonth; d++) c.push({ day: d, current: true });
-    const rem = 42 - c.length; for (let i = 1; i <= rem; i++) c.push({ day: i, current: false });
+    // Only pad to fill the last row, not always 42
+    const rowsNeeded = Math.ceil(c.length / 7);
+    const total = rowsNeeded * 7;
+    const rem = total - c.length;
+    for (let i = 1; i <= rem; i++) c.push({ day: i, current: false });
     return c;
   }, [firstDay, daysInMonth, prevMonthDays]);
+  const gridRows = Math.ceil(cells.length / 7);
 
   const miniCells = useMemo(() => {
     const c = []; for (let i = 0; i < firstDay; i++) c.push(null);
@@ -196,11 +214,6 @@ export default function App() {
           padding: 5px 14px; border-radius: 20px; border: 1.5px solid ${C.border};
           background: #fff; cursor: pointer; white-space: nowrap; transition: all 0.15s;
           display: inline-flex; align-items: center; gap: 6px;
-        }
-        .fab {
-          position: fixed; bottom: 24px; right: 20px; width: 56px; height: 56px; border-radius: 16px;
-          background: ${C.pri}; box-shadow: 0 2px 12px rgba(139,26,43,0.3);
-          display: ${isMobile ? 'grid' : 'none'}; place-items: center; cursor: pointer; border: none; z-index: 100;
         }
       `}</style>
 
@@ -460,7 +473,7 @@ export default function App() {
                   <div key={d+i} style={{ textAlign: "center", fontSize: 11, fontWeight: 500, color: i === todayCol && isMobile ? C.pri : C.textMuted, padding: "6px 0", letterSpacing: "0.8px" }}>{d}</div>
                 ))}
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gridTemplateRows: "repeat(6, 1fr)", flex: 1, padding: isMobile ? "0 2px" : "0" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gridTemplateRows: `repeat(${gridRows}, 1fr)`, flex: 1, padding: isMobile ? "0 2px" : "0" }}>
                 {cells.map((cell, i) => {
                   const key = cell.current ? fmtKey(year, month, cell.day) : null;
                   const events = key ? getFilteredEvents(key) : [];
@@ -468,7 +481,7 @@ export default function App() {
                   const isSelected = key && selected === key;
                   const hasEv = events.length > 0;
                   const isWeekend = i % 7 === 0 || i % 7 === 6;
-                  const isFreeWeekend = cell.current && isWeekend && !hasEv && !isMobile;
+                  const isFreeWeekend = cell.current && isWeekend && !hasEv;
                   const isInTodayCol = (i % 7) === todayCol && isMobile;
                   const cellBg = isSelected ? C.priSoft : isInTodayCol ? C.priTint : hasEv && !isMobile ? C.priTint : isFreeWeekend ? C.free : "#fff";
                   return (
@@ -476,7 +489,7 @@ export default function App() {
                       borderRight: (i + 1) % 7 !== 0 ? `1px solid ${C.border}` : "none",
                       borderBottom: `1px solid ${C.border}`, padding: isMobile ? "1px" : "4px 8px",
                       background: cellBg,
-                      borderLeft: hasEv && !isMobile ? `3px solid ${PERSON_COLORS[events[0]?.person]?.chip || C.pri}` : isFreeWeekend ? `3px solid ${C.freeBorder}` : "none",
+                      borderLeft: hasEv && !isMobile ? `3px solid ${PERSON_COLORS[events[0]?.person]?.chip || C.pri}` : isFreeWeekend ? `2px solid ${C.freeBorder}` : "none",
                       cursor: events.length ? "pointer" : "default", minHeight: isMobile ? "80px" : 0,
                       overflow: "hidden", transition: "background 0.15s", opacity: cell.current ? 1 : 0.35,
                     }}>
@@ -489,7 +502,7 @@ export default function App() {
                         }}>{cell.day}</span>
                       </div>
                       {isFreeWeekend && (
-                        <div style={{ fontSize: 9, fontWeight: 500, color: C.textMuted, background: C.free, border: `1px solid ${C.freeBorder}`, borderRadius: 3, padding: "1px 5px", marginBottom: 2, display: "inline-block" }}>✈ available</div>
+                        <div style={{ fontSize: isMobile ? 7 : 9, fontWeight: 500, color: C.textMuted, background: C.free, border: `1px solid ${C.freeBorder}`, borderRadius: 3, padding: isMobile ? "0px 3px" : "1px 5px", marginBottom: 2, display: "inline-block" }}>✈ free</div>
                       )}
                       {events.map((ev, j) => {
                         const pc = PERSON_COLORS[ev.person] || PERSON_COLORS.kyle;
@@ -528,13 +541,8 @@ export default function App() {
           </div>
         </div>
 
-        {/* FAB */}
-        <button className="fab" aria-label="Create event">
-          <div style={{ width: 36, height: 36, position: "relative" }}>
-            <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 22, height: 3, background: "#fff", borderRadius: 2 }}/>
-            <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 3, height: 22, background: "#fff", borderRadius: 2 }}/>
-          </div>
-        </button>
+
+
 
         {/* EVENT DETAIL POPUP */}
         {selected && getFilteredEvents(selected).length > 0 && (
