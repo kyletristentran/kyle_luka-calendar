@@ -7,19 +7,43 @@ const PEOPLE = {
 };
 
 const EVENTS = [
-  { date: "2026-02-08", title: "Tiki Disco Winter", venue: "Knockdown Center, BK", status: "confirmed", person: "both", time: "10pm" },
-  { date: "2026-02-12", title: "RawCuts", venue: "Secret Location, BK", status: "confirmed", person: "both", time: "11pm" },
-  { date: "2026-02-20", title: "Bedouin", venue: "Capitale, NY", status: "tentative", person: "both", time: "10pm" },
-  { date: "2026-02-21", title: "Cassian", venue: "Navy Yard, BK", status: "confirmed", person: "both", time: "10pm" },
-  { date: "2026-03-01", title: "Tiki Disco Winter", venue: "Knockdown Center, BK", status: "confirmed", person: "both", time: "10pm" },
-  { date: "2026-03-20", title: "Prospa b2b Josh Baker", venue: "Navy Yard, BK", status: "tentative", person: "both", time: "10pm" },
-  { date: "2026-03-21", title: "Carl Cox", venue: "Navy Yard, BK", status: "tentative", person: "both", time: "11pm" },
-  { date: "2026-04-03", title: "SIDEPIECE", venue: "Navy Yard, BK", status: "tentative", person: "both", time: "10pm" },
-  { date: "2026-04-20", title: "Hot Since 82", venue: "House of Yes, BK", status: "tentative", person: "both", time: "11pm" },
-  { date: "2026-04-25", title: "CID", venue: "99 Scott, BK", status: "confirmed", person: "both", time: "11pm" },
-  { date: "2026-05-23", title: "Solomun", venue: "Fulton Fish Market, QE", status: "confirmed", person: "both", time: "6pm" },
-  { date: "2026-06-20", title: "Beltran", venue: "Navy Yard, BK", status: "tentative", person: "both", time: "10pm" },
-  { date: "2026-07-25", title: "Klangkeuntsler", venue: "Monegros Desert Fest, SP", status: "confirmed", person: "both", time: "All day" },
+  // Week 1
+  { date: "2026-02-02", title: "KT / Dr. Arthur", venue: "USC", status: "confirmed", person: "kyle", time: "12:30pm" },
+  { date: "2026-02-02", title: "Tutoring - Noah", venue: "USC", status: "confirmed", person: "kyle", time: "5:00pm" },
+  { date: "2026-02-03", title: "WRIT 340: Submit Student Profile", venue: "USC", status: "confirmed", person: "kyle", time: "11:45pm" },
+  { date: "2026-02-04", title: "USC HOLD - TRE", venue: "USC", status: "confirmed", person: "kyle", time: "2:00pm" },
+  { date: "2026-02-04", title: "Tutoring - Kenne", venue: "USC", status: "confirmed", person: "kyle", time: "5:00pm" },
+  { date: "2026-02-05", title: "KT / Devon - The...", venue: "USC", status: "confirmed", person: "kyle", time: "1:00pm" },
+  { date: "2026-02-05", title: "WRIT 340: Email Illumin article topics", venue: "USC", status: "confirmed", person: "kyle", time: "11:45pm" },
+  { date: "2026-02-05", title: "Illumin Oral Pres", venue: "USC", status: "confirmed", person: "kyle", time: "11:59pm" },
+  { date: "2026-02-06", title: "RED 469: Mix", venue: "USC", status: "confirmed", person: "kyle", time: "9:00am" },
+  { date: "2026-02-06", title: "Tutoring - Erwin", venue: "USC", status: "confirmed", person: "kyle", time: "1:00pm" },
+
+  // Week 2
+  { date: "2026-02-09", title: "KT / Meina", venue: "USC", status: "confirmed", person: "kyle", time: "2:00pm" },
+  { date: "2026-02-10", title: "KT / SkinFX", venue: "USC", status: "confirmed", person: "kyle", time: "10:30am" },
+  { date: "2026-02-12", title: "WRIT 340: Submit Illumin rough draft", venue: "USC", status: "confirmed", person: "kyle", time: "11:45pm" },
+  { date: "2026-02-13", title: "RED 469: Mix", venue: "USC", status: "confirmed", person: "kyle", time: "9:00am" },
+  { date: "2026-02-13", title: "Spring 26 Com", venue: "USC", status: "confirmed", person: "kyle", time: "10:00pm" },
+  { date: "2026-02-13", title: "Observational A", venue: "USC", status: "confirmed", person: "kyle", time: "11:59pm" },
+  { date: "2026-02-14", title: "Valentine's Day", venue: "", status: "confirmed", person: "kyle", time: "All day" },
+
+  // Week 3
+  { date: "2026-02-16", title: "Presidents' Day", venue: "", status: "confirmed", person: "kyle", time: "All day" },
+  { date: "2026-02-16", title: "TREA E-Board Meeting", venue: "USC", status: "confirmed", person: "kyle", time: "3:00pm" },
+  { date: "2026-02-17", title: "WRIT 340: Illumin oral pres", venue: "USC", status: "confirmed", person: "kyle", time: "5:00pm" },
+  { date: "2026-02-18", title: "Dining Society D", venue: "USC", status: "confirmed", person: "kyle", time: "6:30pm" },
+  { date: "2026-02-18", title: "Final Draft Illumin", venue: "USC", status: "confirmed", person: "kyle", time: "11:59pm" },
+  { date: "2026-02-19", title: "KT / Ray", venue: "USC", status: "confirmed", person: "kyle", time: "10:30am" },
+  { date: "2026-02-19", title: "WRIT 340: Submit Illumin final draft", venue: "USC", status: "confirmed", person: "kyle", time: "11:45pm" },
+  { date: "2026-02-20", title: "RED 469: Mix", venue: "USC", status: "confirmed", person: "kyle", time: "9:00am" },
+
+  // Week 4
+  { date: "2026-02-22", title: "Project Angel F", venue: "USC", status: "confirmed", person: "kyle", time: "12:45pm" },
+  { date: "2026-02-24", title: "Resume Review", venue: "USC", status: "tentative", person: "kyle", time: "6:30pm" },
+  { date: "2026-02-25", title: "Dining Society D", venue: "USC", status: "confirmed", person: "kyle", time: "6:30pm" },
+  { date: "2026-02-26", title: "Lever Friends Ha", venue: "USC", status: "confirmed", person: "kyle", time: "6:00pm" },
+  { date: "2026-02-27", title: "RED 469: Mix", venue: "USC", status: "confirmed", person: "kyle", time: "9:00am" },
 ];
 
 const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -84,7 +108,7 @@ export default function App() {
             <rect width="36" height="36" rx="4" fill="#4285f4"/>
             <text x="18" y="25" textAnchor="middle" fill="#fff" fontSize="18" fontWeight="700" fontFamily="Google Sans, sans-serif">{today.getDate()}</text>
           </svg>
-          <span style={{ fontSize: 22, fontWeight: 400, color: "#3c4043" }}>Calendar</span>
+          <span style={{ fontSize: 22, fontWeight: 400, color: "#3c4043" }}>Kyle and Luka Calendar</span>
         </div>
         <button onClick={() => { setYear(today.getFullYear()); setMonth(today.getMonth()); }} style={{ border: "1px solid #dadce0", borderRadius: 4, padding: "6px 20px", background: "#fff", fontSize: 14, fontWeight: 500, color: "#3c4043", cursor: "pointer", marginLeft: 16 }}>Today</button>
         <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
@@ -167,6 +191,15 @@ export default function App() {
             <div style={{ fontSize: 13, color: "#3c4043" }}>Feb – Jul 2026</div>
             <div style={{ fontSize: 12, color: "#70757a", marginTop: 2 }}>{EVENTS.length} events total</div>
           </div>
+
+          {/* Available weekends note */}
+          <div style={{ borderTop: "1px solid #dadce0", marginTop: 16, paddingTop: 16, padding: "16px 8px 0" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <div style={{ width: 12, height: 12, borderRadius: 2, background: "rgba(52,168,83,0.15)", border: "1px solid rgba(52,168,83,0.3)", flexShrink: 0 }} />
+              <span style={{ fontSize: 12, color: "#34a853", fontWeight: 450 }}>✈ Free weekends</span>
+            </div>
+            <div style={{ fontSize: 11, color: "#9aa0a6", marginTop: 4 }}>Available for flights & trips</div>
+          </div>
         </div>
 
         {/* MAIN GRID */}
@@ -184,10 +217,13 @@ export default function App() {
               const isSelected = key && selected === key;
               const hasEv = events.length > 0;
               const evPerson = hasEv ? events[0].person : null;
+              const isWeekend = i % 7 === 0 || i % 7 === 6;
+              const isFreeWeekend = cell.current && isWeekend && !hasEv;
               const cellTint = isSelected ? "#e8f0fe"
                 : hasEv && evPerson === "kyle" ? "rgba(91,164,207,0.08)"
                 : hasEv && evPerson === "luka" ? "rgba(139,26,43,0.08)"
                 : hasEv && evPerson === "both" ? "rgba(139,26,43,0.05)"
+                : isFreeWeekend ? "rgba(52,168,83,0.06)"
                 : "#fff";
               return (
                 <div key={i} onClick={() => key && events.length && setSelected(isSelected ? null : key)} style={{
@@ -195,7 +231,8 @@ export default function App() {
                   borderBottom: "1px solid #dadce0",
                   padding: "4px 8px",
                   background: cellTint,
-                  borderLeft: hasEv ? `3px solid ${evPerson === "kyle" ? "#5BA4CF" : evPerson === "luka" ? "#8B1A2B" : "#7a5f7b"}` : "none",
+                  borderLeft: hasEv ? `3px solid ${evPerson === "kyle" ? "#5BA4CF" : evPerson === "luka" ? "#8B1A2B" : "#7a5f7b"}`
+                    : isFreeWeekend ? "3px solid rgba(52,168,83,0.3)" : "none",
                   cursor: events.length ? "pointer" : "default",
                   minHeight: 0, overflow: "hidden",
                   transition: "background 0.15s",
@@ -210,6 +247,16 @@ export default function App() {
                       color: t ? "#fff" : cell.current ? "#3c4043" : "#70757a",
                     }}>{cell.day}</span>
                   </div>
+
+                  {/* Free weekend tag */}
+                  {isFreeWeekend && (
+                    <div style={{
+                      fontSize: 9, fontWeight: 500, color: "#34a853",
+                      background: "rgba(52,168,83,0.1)", borderRadius: 3,
+                      padding: "1px 5px", marginBottom: 2, display: "inline-block",
+                      letterSpacing: "0.3px",
+                    }}>✈ available</div>
+                  )}
 
                   {/* Event chips */}
                   {events.map((ev, j) => {
